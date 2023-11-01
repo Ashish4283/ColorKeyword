@@ -26,17 +26,21 @@
     
     <!-- Add the "natural" library -->
     <script src="https://cdn.jsdelivr.net/npm/natural@0.6.2/lib/natural.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/compromise@11.5.6/compromise.js"></script>
+
 
     <script>
-        // Function to format keywords in text
-        function formatKeywordsInText(text) {
-            // Tokenize the input text using the "natural" library
-            var tokenizer = new natural.WordTokenizer();
-            var words = tokenizer.tokenize(text);
+    // Function to format keywords in text using "compromise"
+    function formatKeywordsInText(text) {
+        // Tokenize the input text using "compromise"
+        var tokens = nlp(text).out('array');
 
-            // Create a formatted sentence
-            var formattedSentence = "";
+        // Create a formatted sentence
+        var formattedSentence = "";
 
+        // Define your keywords and their corresponding colors
+        var keywords = {
+        
             // Define your keywords and their corresponding colors
             var keywords = {
             "allergy medicine": "red",
@@ -185,46 +189,34 @@
             "vitamins - kids": "red"
             };
 
-            // Process two-word keywords by splitting them into single words
-            var twoWordKeywords = Object.keys(keywords).filter(keyword => keyword.split(' ').length === 2);
-            for (var i = 0; i < words.length; i++) {
-                var word = words[i];
-                var color = keywords[word.toLowerCase()];
-                
-                if (color) {
-                    // If the word is a keyword, format it
-                    formattedSentence += '<span style="font-weight: bold; color: ' + color + ';">' + word + '</span>';
-                } else {
-                    // If not a keyword, check if it's part of a two-word keyword
-                    var nextWord = words[i + 1];
-                    var combinedWord = (word + ' ' + nextWord).toLowerCase();
-                    if (twoWordKeywords.includes(combinedWord)) {
-                        formattedSentence += '<span style="font-weight: bold; color: ' + keywords[combinedWord] + ';">' + combinedWord + '</span>';
-                        i++; // Skip the next word since it's part of the two-word keyword
-                    } else {
-                        // If not part of a keyword, append the word as is
-                        formattedSentence += word;
-                    }
-                }
+        for (var i = 0; i < tokens.length; i++) {
+            var word = tokens[i];
+            var color = keywords[word.toLowerCase()];
 
-                // Add a space after each word
-                formattedSentence += " ";
+            if (color) {
+                // If the word is a keyword, format it
+                formattedSentence += '<span style="font-weight: bold; color: ' + color + ';">' + word + '</span>';
+            } else {
+                // If not a keyword, append the word as is
+                formattedSentence += word;
             }
 
-            return formattedSentence;
+            // Add a space after each word
+            formattedSentence += " ";
         }
 
-        // Function to convert and display formatted text
-        function convertText() {
-            // Get the unformatted text from the input text box
-            var unformattedText = document.getElementById("unformattedText").value;
+        return formattedSentence;
+    }
 
-            // Format the text using the formatKeywordsInText function
-            var formattedText = formatKeywordsInText(unformattedText);
+    // Function to convert and display formatted text
+    function convertText() {
+        // Get the unformatted text from the input text box
+        var unformattedText = document.getElementById("unformattedText").value;
 
-            // Set the formatted text as the content of the output text box
-            document.getElementById("formattedText").innerHTML = formattedText;
-        }
-    </script>
-</body>
-</html>
+        // Format the text using the formatKeywordsInText function
+        var formattedText = formatKeywordsInText(unformattedText);
+
+        // Set the formatted text as the content of the output text box
+        document.getElementById("formattedText").innerHTML = formattedText;
+    }
+</script>
