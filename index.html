@@ -189,6 +189,8 @@
 
                 // Convert both the keyword and word to lowercase for case-insensitive comparison
                 word = word.toLowerCase();
+
+                // Check for keywords, including phrases with spaces
                 for (var keyword in keywords) {
                     if (word.includes(keyword)) {
                         if (keyword.length > color.length) {
