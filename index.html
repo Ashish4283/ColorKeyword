@@ -12,7 +12,7 @@
     <h1>Keyword Formatter</h1>
     
     <!-- Text box for input -->
-    <textarea id="unformattedText" rows="50" cols="120" placeholder="Insert unformatted text here"></textarea>
+    <textarea id="unformattedText" rows="10" cols="60" style="font-size: 16px;" placeholder="Insert unformatted text here"></textarea>
     
     <br>
     
@@ -25,6 +25,7 @@
     <div id="formattedText"></div>
     
     <script>
+
         // Your JavaScript code here
         var keywords = {
             "allergy medicine": "red",
@@ -186,9 +187,10 @@
                 var word = words[i];
                 var color = "";
 
-                // Check for longer keywords first
+                // Convert both the keyword and word to lowercase for case-insensitive comparison
+                word = word.toLowerCase();
                 for (var keyword in keywords) {
-                    if (word.toLowerCase().includes(keyword)) {
+                    if (word.includes(keyword)) {
                         if (keyword.length > color.length) {
                             color = keywords[keyword];
                         }
@@ -197,10 +199,10 @@
 
                 if (color) {
                     // If a keyword is found, format it
-                    formattedSentence += '<span style="font-weight: bold; color: ' + color + ';">' + word + '</span>';
+                    formattedSentence += '<span style="font-weight: bold; color: ' + color + ';">' + words[i] + '</span>';
                 } else {
                     // If not a keyword, append the word as is
-                    formattedSentence += word;
+                    formattedSentence += words[i];
                 }
 
                 // Add a space after each word
