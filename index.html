@@ -12,12 +12,12 @@
     <h1>Keyword Formatter</h1>
     
     <!-- Text box for input -->
-    <textarea id="unformattedText" rows="5" cols="40" placeholder="Insert unformatted text here"></textarea>
+    <textarea id="unformattedText" rows="50" cols="120" placeholder="Insert unformatted text here"></textarea>
     
     <br>
     
     <!-- Convert button -->
-    <button onclick="convertText()">Convert</button>
+    <button onclick="convertText()" style="font-size: 20px;">Convert</button>
     
     <br>
     
@@ -173,21 +173,30 @@
             "vitamins - kids": "red"
         };
 
-        // Function to format keywords in text
-        function formatKeywordsInText(text) {
+            // Function to format keywords in text
+            function formatKeywordsInText(text) {
             // Split the text into words
-            var words = text.split(" ");
+                var words = text.split(" ");
 
             // Create a formatted sentence
-            var formattedSentence = "";
+                var formattedSentence = "";
 
             // Loop through the words and format keywords
-            for (var i = 0; i < words.length; i++) {
-                var word = words[i];
-                var color = keywords[word.toLowerCase()];
+                for (var i = 0; i < words.length; i++) {
+                    var word = words[i];
+                    var color = "";
+
+                    // Check for longer keywords first
+                    for (var keyword in keywords) {
+                        if (word.toLowerCase().includes(keyword)) {
+                            if (keyword.length > color.length) {
+                                color = keywords[keyword];
+                        }
+                    }
+                }
 
                 if (color) {
-                    // If the word is a keyword, format it
+                    // If a keyword is found, format it
                     formattedSentence += '<span style="font-weight: bold; color: ' + color + ';">' + word + '</span>';
                 } else {
                     // If not a keyword, append the word as is
