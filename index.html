@@ -185,28 +185,26 @@
             "vitamins - kids": "red"
             };
 
-            // Loop through the words and format keywords
+            // Process two-word keywords by splitting them into single words
+            var twoWordKeywords = Object.keys(keywords).filter(keyword => keyword.split(' ').length === 2);
             for (var i = 0; i < words.length; i++) {
                 var word = words[i];
                 var color = keywords[word.toLowerCase()];
-
-                // Check if the next word is part of a two-word keyword
-                if (i < words.length - 1) {
-                    var twoWordKeyword = word + ' ' + words[i + 1];
-                    var twoWordColor = keywords[twoWordKeyword.toLowerCase()];
-                    if (twoWordColor) {
-                        formattedSentence += '<span style="font-weight: bold; color: ' + twoWordColor + ';">' + twoWordKeyword + '</span>';
-                        i++; // Skip the next word since it's part of the two-word keyword
-                        continue;
-                    }
-                }
-
+                
                 if (color) {
                     // If the word is a keyword, format it
                     formattedSentence += '<span style="font-weight: bold; color: ' + color + ';">' + word + '</span>';
                 } else {
-                    // If not a keyword, append the word as is
-                    formattedSentence += word;
+                    // If not a keyword, check if it's part of a two-word keyword
+                    var nextWord = words[i + 1];
+                    var combinedWord = (word + ' ' + nextWord).toLowerCase();
+                    if (twoWordKeywords.includes(combinedWord)) {
+                        formattedSentence += '<span style="font-weight: bold; color: ' + keywords[combinedWord] + ';">' + combinedWord + '</span>';
+                        i++; // Skip the next word since it's part of the two-word keyword
+                    } else {
+                        // If not part of a keyword, append the word as is
+                        formattedSentence += word;
+                    }
                 }
 
                 // Add a space after each word
