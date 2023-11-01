@@ -24,6 +24,9 @@
     <!-- Text box for formatted output -->
     <div id="formattedText"></div>
     
+    <!-- Add the "natural" library -->
+    <script src="https://cdn.jsdelivr.net/npm/natural@0.6.2/lib/natural.js"></script>
+
     <script>
 
         // Your JavaScript code here
@@ -174,37 +177,17 @@
             "vitamins - kids": "red"
                };
 
-        // Function to format keywords in text
-        function formatKeywordsInText(text) {
-            // Split the text into words
-            var words = text.split(" ");
-
-            // Create a formatted sentence
-            var formattedSentence = "";
-
             // Loop through the words and format keywords
             for (var i = 0; i < words.length; i++) {
                 var word = words[i];
-                var color = "";
-
-                // Convert both the keyword and word to lowercase for case-insensitive comparison
-                word = word.toLowerCase();
-
-                // Check for keywords, including phrases with spaces
-                for (var keyword in keywords) {
-                    if (word.includes(keyword)) {
-                        if (keyword.length > color.length) {
-                            color = keywords[keyword];
-                        }
-                    }
-                }
+                var color = keywords[word.toLowerCase()];
 
                 if (color) {
-                    // If a keyword is found, format it
-                    formattedSentence += '<span style="font-weight: bold; color: ' + color + ';">' + words[i] + '</span>';
+                    // If the word is a keyword, format it
+                    formattedSentence += '<span style="font-weight: bold; color: ' + color + ';">' + word + '</span>';
                 } else {
                     // If not a keyword, append the word as is
-                    formattedSentence += words[i];
+                    formattedSentence += word;
                 }
 
                 // Add a space after each word
@@ -228,3 +211,4 @@
     </script>
 </body>
 </html>
+       
