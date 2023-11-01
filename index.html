@@ -28,9 +28,17 @@
     <script src="https://cdn.jsdelivr.net/npm/natural@0.6.2/lib/natural.js"></script>
 
     <script>
+        // Function to format keywords in text
+        function formatKeywordsInText(text) {
+            // Tokenize the input text using the "natural" library
+            var tokenizer = new natural.WordTokenizer();
+            var words = tokenizer.tokenize(text);
 
-        // Your JavaScript code here
-        var keywords = {
+            // Create a formatted sentence
+            var formattedSentence = "";
+
+            // Define your keywords and their corresponding colors
+            var keywords = {
             "allergy medicine": "red",
             "allergy meds": "red",
             "allergy pills": "red",
@@ -175,12 +183,23 @@
             "body wash": "red",
             "men's hair": "red",
             "vitamins - kids": "red"
-               };
+            };
 
             // Loop through the words and format keywords
             for (var i = 0; i < words.length; i++) {
                 var word = words[i];
                 var color = keywords[word.toLowerCase()];
+
+                // Check if the next word is part of a two-word keyword
+                if (i < words.length - 1) {
+                    var twoWordKeyword = word + ' ' + words[i + 1];
+                    var twoWordColor = keywords[twoWordKeyword.toLowerCase()];
+                    if (twoWordColor) {
+                        formattedSentence += '<span style="font-weight: bold; color: ' + twoWordColor + ';">' + twoWordKeyword + '</span>';
+                        i++; // Skip the next word since it's part of the two-word keyword
+                        continue;
+                    }
+                }
 
                 if (color) {
                     // If the word is a keyword, format it
@@ -211,4 +230,3 @@
     </script>
 </body>
 </html>
-       
