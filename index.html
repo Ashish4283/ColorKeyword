@@ -171,26 +171,26 @@
             "body wash": "red",
             "men's hair": "red",
             "vitamins - kids": "red"
-        };
+               };
 
-            // Function to format keywords in text
-            function formatKeywordsInText(text) {
+        // Function to format keywords in text
+        function formatKeywordsInText(text) {
             // Split the text into words
-                var words = text.split(" ");
+            var words = text.split(" ");
 
             // Create a formatted sentence
-                var formattedSentence = "";
+            var formattedSentence = "";
 
             // Loop through the words and format keywords
-                for (var i = 0; i < words.length; i++) {
-                    var word = words[i];
-                    var color = "";
+            for (var i = 0; i < words.length; i++) {
+                var word = words[i];
+                var color = "";
 
-                    // Check for longer keywords first
-                    for (var keyword in keywords) {
-                        if (word.toLowerCase().includes(keyword)) {
-                            if (keyword.length > color.length) {
-                                color = keywords[keyword];
+                // Check for longer keywords first
+                for (var keyword in keywords) {
+                    if (word.toLowerCase().includes(keyword)) {
+                        if (keyword.length > color.length) {
+                            color = keywords[keyword];
                         }
                     }
                 }
