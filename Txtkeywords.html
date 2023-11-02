@@ -43,8 +43,11 @@
             var words = text.split(/\s+/);
             for (var word of words) {
                 var formattedWord = word;
-                if (keywords.includes(word.toLowerCase())) {
-                    formattedWord = '<span class="highlight">' + word + '</span>';
+                var lowercaseWord = word.toLowerCase(); // Convert the word to lowercase for comparison
+
+                // Check if the lowercase word is in the keywords array
+                if (keywords.includes(lowercaseWord)) {
+                formattedWord = '<span class="highlight">' + word + '</span>';
                 }
                 formattedText = formattedText.replace(new RegExp('\\b' + word + '\\b', 'gi'), formattedWord);
             }
