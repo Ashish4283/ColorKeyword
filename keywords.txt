@@ -11,9 +11,9 @@ travel
 pack
 cetirizine
 antihistamine
-24
-72
-48
+24-hour
+72-hour
+48-hour
 hour
 allergy
 relief
@@ -157,4 +157,6 @@ Men's
 Hair
 Vitamins
 Kids
+moisture
 Skin
+moisturizes
