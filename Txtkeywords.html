@@ -32,33 +32,24 @@
         fetch('https://ashish4283.github.io/ColorKeyword/keywords.txt')
             .then(response => response.text())
             .then(data => {
-                keywords = data.split('\n').map(keyword => keyword.trim().toLowerCase()); // Load keywords into the array as lowercase
+                keywords = data.split('\n').map(keyword => keyword.trim()); // Load keywords into the array
             });
 
         // Function to format keywords in text
         function formatKeywordsInText(text) {
             var formattedText = text;
 
-            // Split the text into words
+            // Iterate through each word in the text
             var words = text.split(/\s+/);
-
             for (var word of words) {
                 var formattedWord = word;
-                var lowercaseWord = word.toLowerCase(); // Convert the word to lowercase for comparison
-
-                // Check if the lowercase word is in the keywords array (also converted to lowercase)
-                if (keywords.includes(lowercaseWord)) {
+                if (keywords.includes(word.toLowerCase())) {
                     formattedWord = '<span class="highlight">' + word + '</span>';
-                    formattedText = formattedText.replace(new RegExp('\\b' + escapeRegExp(word) + '\\b', 'gi'), formattedWord);
                 }
+                formattedText = formattedText.replace(new RegExp('\\b' + word + '\\b', 'gi'), formattedWord);
             }
 
             return formattedText;
-        }
-
-        // Helper function to escape special characters in the word
-        function escapeRegExp(string) {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
 
         // Function to convert and display formatted text
