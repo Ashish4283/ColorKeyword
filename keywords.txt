@@ -12,6 +12,8 @@ pack
 cetirizine
 antihistamine
 24
+72
+48
 hour
 allergy
 relief
