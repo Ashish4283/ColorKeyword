@@ -27,11 +27,11 @@
             var keywords = []; // Initialize an empty array for keywords
 
             // Fetch and load keywords from keywords.txt
-            fetch('keywords.txt')
+            fetch('https://ashish4283.github.io/ColorKeyword/keywords.txt')
                 .then(response => response.text())
                 .then(data => {
-                    keywords = data.split('\n').map(keyword => keyword.trim()); // Load keywords into the array
-                });
+                keywords = data.split('\n').map(keyword => keyword.trim()); // Load keywords into the array
+                 });
 
             // Function to format keywords in text
             function formatKeywordsInText(text) {
