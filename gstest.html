@@ -1,38 +1,48 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Keyword Formatter</title>
     <style>
         .angle-brackets {
             color: red;
-        </style>
-    </head>
-    <body>
-        <h1>Keyword Formatter</h1>
-        
-        <!-- Text box for input -->
-        <textarea id="unformattedText" rows="10" cols="60" style="font-size: 16px;" placeholder="Insert unformatted text here"></textarea>
-        
-        <button onclick="convertText()" style="font-size: 20px;">Convert</button>
+        }
+    </style>
+</head>
 
-        <br>
+<body>
+    <h1>Keyword Formatter</h1>
 
-        <!-- Text box for formatted output -->
-        <div id="formattedText"></div>
+    <!-- Text box for input -->
+    <textarea id="unformattedText" rows="10" cols="60" style="font-size: 16px;" placeholder="Insert unformatted text here"></textarea>
 
-        <script>
-            // Function to convert and display formatted text
-            function convertText() {
-                var unformattedText = document.getElementById("unformattedText").value;
-                google.script.run
-                    .withSuccessHandler(function (formattedText) {
-                        document.getElementById("formattedText").innerHTML = formattedText;
-                    })
-                    .formatKeywordsInText(unformattedText);
-            }
-        </script>
+    <button onclick="convertText()" style="font-size: 20px;">Convert</button>
 
-        <!-- Include the URL of your Google Apps Script web app -->
-        <script src="https://script.google.com/macros/s/AKfycbxQkW9VtaFbiG_aesu7i-bDBC-xvTA3Ol6cQbc51U1vWkK750M0BJJ4hgvCCujeJ8T/exec"></script>
-    </body>
+    <br>
+
+    <!-- Text box for formatted output -->
+    <div id="formattedText"></div>
+
+    <script>
+        // Function to convert and display formatted text
+        function convertText() {
+            var unformattedText = document.getElementById("unformattedText").value;
+            console.log("Unformatted Text:", unformattedText);  // Log the text
+
+            google.script.run
+                .withSuccessHandler(function(formattedText) {
+                    document.getElementById("formattedText").innerHTML = formattedText;
+                })
+                .withFailureHandler(function(error) {
+                    console.error("Error:", error);
+                    alert("Error: " + error);
+                })
+                .formatKeywordsInText(unformattedText);
+        }
+    </script>
+
+    <!-- Include the URL of your Google Apps Script web app -->
+    <script src="https://script.google.com/macros/s/AKfycbxrsVb0enRuZdcors5C4tIEpmUd9UqVrHubUMrtODu56WbFa6eh8lBcxNGuCRptnSQ-/exec"></script>
+</body>
+
 </html>
