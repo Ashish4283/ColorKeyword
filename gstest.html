@@ -13,64 +13,26 @@
         <!-- Text box for input -->
         <textarea id="unformattedText" rows="10" cols="60" style="font-size: 16px;" placeholder="Insert unformatted text here"></textarea>
         
-        <br>
-        
-        <!-- Convert button -->
         <button onclick="convertText()" style="font-size: 20px;">Convert</button>
-        
+
         <br>
-        
+
         <!-- Text box for formatted output -->
         <div id="formattedText"></div>
-        
-        <!-- Import the gapi library -->
-        <script src="https://apis.google.com/js/api.js"></script>
 
         <script>
-            // Initialize the API client with your API key and client ID
-            gapi.load('client', initClient);
-
-            function initClient() {
-                gapi.client.init({
-                    apiKey: 'AIzaSyCqn1qwHmwgQ10tqyMJE-vLWGcaWvVrUms',
-                    clientId: '805583965710-4h8r33dohqlibaenumlhpt018jol38d2.apps.googleusercontent.com',
-                    discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-                    scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
-                }).then(function () {
-                    // Handle the authorization here.
-                    // Fetch data from Google Sheets using the API.
-                });
-            }
-
-            // Function to format keywords in text
-            function formatKeywordsInText(text, keywords) {
-                var formattedText = text;
-
-                // Iterate through each keyword
-                for (var keyword of keywords) {
-                    if (keyword) {
-                        var regex = new RegExp("\\b" + keyword + "\\b", "gi"); // Create a regex pattern for the keyword
-                        formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: red;">' + keyword + '</span>'); // Replace the keyword with the styled version
-                    }
-                }
-
-                return formattedText;
-            }
-
             // Function to convert and display formatted text
             function convertText() {
                 var unformattedText = document.getElementById("unformattedText").value;
-
-                // Fetch data from Google Sheets
-                gapi.client.sheets.spreadsheets.values.get({
-                    spreadsheetId: '1LSG10olrSi9o6e6wdabN0jZRVtNIHUaijr3Rns_2vw8',
-                    range: 'Sheet1!A:A' // Adjust the range as needed
-                }).then(function(response) {
-                    var keywords = response.result.values.flat(); // Get the keywords from the response
-                    var formattedText = formatKeywordsInText(unformattedText, keywords);
-                    document.getElementById("formattedText").innerHTML = formattedText;
-                });
+                google.script.run
+                    .withSuccessHandler(function (formattedText) {
+                        document.getElementById("formattedText").innerHTML = formattedText;
+                    })
+                    .formatKeywordsInText(unformattedText);
             }
         </script>
+
+        <!-- Include the URL of your Google Apps Script web app -->
+        <script src="https://script.google.com/macros/s/AKfycbxQkW9VtaFbiG_aesu7i-bDBC-xvTA3Ol6cQbc51U1vWkK750M0BJJ4hgvCCujeJ8T/exec"></script>
     </body>
 </html>
