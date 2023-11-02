@@ -40,11 +40,14 @@
                 // Iterate through each keyword
                 for (var keyword of keywords) {
                     if (keyword) {
-                        // Escape special characters in the keyword for the regular expression
-                        var escapedKeyword = keyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                        
-                        var regex = new RegExp("\\b" + escapedKeyword + "\\b", "gi"); // Create a regex pattern for the keyword
-                        formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: red;">$&</span>'); // Replace the keyword with the styled version
+                        // Split multi-word keywords into individual words
+                        var words = keyword.split(' ');
+
+                        // Iterate through individual words of the keyword
+                        for (var word of words) {
+                            var regex = new RegExp("\\b" + word + "\\b", "gi"); // Create a regex pattern for the word
+                            formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: red;">$&</span>'); // Replace the word with the styled version
+                        }
                     }
                 }
 
