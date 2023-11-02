@@ -7,7 +7,7 @@
             color: red;
         </style>
     </head>
-    <body> 
+    <body>
         <h1>Keyword Formatter</h1>
         
         <!-- Text box for input -->
@@ -44,7 +44,7 @@
                         var escapedKeyword = keyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                         
                         var regex = new RegExp("\\b" + escapedKeyword + "\\b", "gi"); // Create a regex pattern for the keyword
-                        formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: red;">' + keyword + '</span>'); // Replace the keyword with the styled version
+                        formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: red;">$&</span>'); // Replace the keyword with the styled version
                     }
                 }
 
