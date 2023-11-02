@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyword Formatter</title>
+    <style>
+        .angle-brackets {
+            color: red;
+        </style>
+    </head>
+    <body>
+        <h1>Keyword Formatter</h1>
+        
+        <!-- Text box for input -->
+        <textarea id="unformattedText" rows="10" cols="60" style="font-size: 16px;" placeholder="Insert unformatted text here"></textarea>
+        
+        <br>
+        
+        <!-- Convert button -->
+        <button onclick="convertText()" style="font-size: 20px;">Convert</button>
+        
+        <br>
+        
+        <!-- Text box for formatted output -->
+        <div id="formattedText"></div>
+        
+        <script>
+            var keywords = []; // Initialize an empty array for keywords
+
+            // Fetch and load keywords from keywords.txt
+            fetch('keywords.txt')
+                .then(response => response.text())
+                .then(data => {
+                    keywords = data.split('\n').map(keyword => keyword.trim()); // Load keywords into the array
+                });
+
+            // Function to format keywords in text
+            function formatKeywordsInText(text) {
+                var formattedText = text;
+
+                // Iterate through each keyword
+                for (var keyword of keywords) {
+                    if (keyword) {
+                        var regex = new RegExp("\\b" + keyword + "\\b", "gi"); // Create a regex pattern for the keyword
+                        formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: red;">' + keyword + '</span>'); // Replace the keyword with the styled version
+                    }
+                }
+
+                return formattedText;
+            }
+
+            // Function to convert and display formatted text
+            function convertText() {
+                var unformattedText = document.getElementById("unformattedText").value;
+                var formattedText = formatKeywordsInText(unformattedText);
+                document.getElementById("formattedText").innerHTML = formattedText;
+            }
+        </script>
+    </body>
+</html>
