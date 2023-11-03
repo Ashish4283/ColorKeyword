@@ -5,13 +5,15 @@
     <style>
         .angle-brackets {
             color: red;
-        </style>
+        </style> <!-- Should be </style> -->
     </head>
     <body>
         <h1>Keyword Formatter</h1>
         
-        <!-- Text box for input -->
-        <textarea id="unformattedText" rows="10" cols="60" style="font-size: 16px;" placeholder="Insert unformatted text here"></textarea>
+        <!-- Text box for input with word and character counters -->
+        <textarea id="unformattedText" rows="10" cols="60" style="font-size: 16px;" placeholder="Insert unformatted text here" oninput="updateCounters(this)"></textarea>
+        <div>Word Count: <span id="wordCount">0</span></div>
+        <div>Character Count: <span id="charCount">0</span></div>
         
         <br>
         
@@ -20,172 +22,33 @@
         
         <br>
         
-        <!-- Text box for formatted output -->
+        <!-- Text box for manual editing with word and character counters -->
+        <textarea id="manualText" rows="10" cols="60" style="font-size: 16px;" placeholder="Manual editing"></textarea>
+        <div>Word Count: <span id="manualWordCount">0</span></div>
+        <div>Character Count: <span id="manualCharCount">0</span></div>
+        
+        <!-- Formatted output -->
         <div id="formattedText"></div>
         
         <script>
+            var keywords = []; // Initialize an empty array for keywords
+
+            // Fetch and load keywords from keywords.txt
+            fetch('https://ashish4283.github.io/ColorKeyword/keywords.txt')
+                .then(response => response.text())
+                .then(data => {
+                keywords = data.split('\n').map(keyword => keyword.trim()); // Load keywords into the array
+                 });
+
             // Function to format keywords in text
             function formatKeywordsInText(text) {
                 var formattedText = text;
-                var keywords = {
-            "allergy medicine": "red",
-            "allergy meds": "red",
-            "allergy pills": "red",
-            "allergy relief": "red",
-            "childrens allergy meds": "red",
-            "childrens allergy medicine": "red",
-            "childrens allergy relief": "red",
-            "childrens allergy pills": "red",
-            "allergy tablets": "red",
-            "allergy tabs": "red",
-            "allergy travel pack": "red",
-            "cetirizine": "red",
-            "antihistamine": "red",
-            "24 hour allergy relief": "red",
-            "24 hour": "red",
-            "allergy capsules": "red",
-            "cleansing wipes": "red",
-            "gentle wash": "red",
-            "baby gentle wash": "red",
-            "foaming cleanser": "red",
-            "texture renewing body cream": "red",
-            "texture renewing body lotion": "red",
-            "kids body wash": "red",
-            "kids body lotion": "red",
-            "baby oil": "red",
-            "baby lotion": "red",
-            "nourishing baby wash": "red",
-            "gentle baby body wash": "red",
-            "baby cleansing cloths": "red",
-            "gentle cleansing cloths": "red",
-            "newborn body wash": "red",
-            "newborn shampoo": "red",
-            "baby shampoo": "red",
-            "bedtime baby wash": "red",
-            "calming baby wash": "red",
-            "baby powder": "red",
-            "baby conditioner": "red",
-            "head to toe cleansing cloths": "red",
-            "hand and face cleansing wipes": "red",
-            "baby wipes": "red",
-            "newborn lotion": "red",
-            "baby oil gel": "red",
-            "kids shampoo": "red",
-            "kids conditioner": "red",
-            "lotion": "red",
-            "body lotion": "red",
-            "moisturizing lotion": "red",
-            "moisturizing body lotion": "red",
-            "moisturizer": "red",
-            "moisturizes": "red",
-            "daily moisturizer": "red",
-            "dry skin": "red",
-            "body wash": "red",
-            "body scrub": "red",
-            "exfoliating body wash": "red",
-            "exfoliating body scrub": "red",
-            "moisturizing body wash": "red",
-            "fragrance free body scrub": "red",
-            "fragrance free body lotion": "red",
-            "frangrance free lotion": "red",
-            "daily moisturizing body lotion": "red",
-            "oil mist": "red",
-            "moisturizing oil mist": "red",
-            "moisturizing": "red",
-            "oil mist": "red",
-            "body gel": "red",
-            "boby": "red",
-            "bath": "red",
-            "gel cream": "red",
-            "body oil": "red",
-            "health care": "red",
-            "bandages": "red",
-            "first aid": "red",
-            "first aid kit": "red",
-            "oral care": "red",
-            "oral hygiene": "red",
-            "mouthwash": "red",
-            "oral rinse": "red",
-            "mouth care": "red",
-            "mouth rinse": "red",
-            "mint mouthwash": "red",
-            "cool mint mouthwash": "red",
-            "total care mouthwash": "red",
-            "oral antiseptic": "red",
-            "antiseptic mouthwash": "red",
-            "anticavity mouthwash": "red",
-            "anticavity": "red",
-            "antiseptic": "red",
-            "antigingivitus": "red",
-            "fluoride": "red",
-            "dental health": "red",
-            "fluoride mouthwash": "red",
-            "floss": "red",
-            "fresh breath": "red",
-            "bad breath": "red",
-            "mint": "red",
-            "fresh mint mouthwash": "red",
-            "mouthwash": "red",
-            "alcohol free mouthwash": "red",
-            "alcohol free": "red",
-            "zero alcohol mouthwash": "red",
-            "plaque": "red",
-            "pain medicine": "red",
-            "pain meds": "red",
-            "pain relief": "red",
-            "acetaminophen": "red",
-            "extra strength pain relief": "red",
-            "kids pain meds": "red",
-            "kids pain medicine": "red",
-            "kids pain relief": "red",
-            "childrens pain relief": "red",
-            "childrens pain meds": "red",
-            "childrens pain medicine": "red",
-            "fever medicine": "red",
-            "arthritis relief": "red",
-            "arthritis medicine": "red",
-            "arthritis meds": "red",
-            "muscle ache medicine": "red",
-            "muscle ache relief": "red",
-            "muscle pain relief": "red",
-            "night time pain medicine": "red",
-            "night time pain relief": "red",
-            "fever reducer": "red",
-            "ibuprofen": "red",
-            "nsaid": "red",
-            "liquid fever relief": "red",
-            "fever relief syrup": "red",
-            "kids sleep aid": "red",
-            "sunscreen": "red",
-            "moisturizing sunscreen": "red",
-            "sunscreen lotion": "red",
-            "sunscreen spray": "red",
-            "sunscreen stick": "red",
-            "spf moisturizer": "red",
-            "spf daily moisturizer": "red",
-            "allergy": "red",
-            "kids allergy": "red",
-            "pain": "red",
-            "pain - children's": "red",
-            "body lotion": "red",
-            "hair care": "red",
-            "baby lotion": "red",
-            "baby treatments": "red",
-            "baby wash": "red",
-            "oral - mouthwash": "red",
-            "first aid": "red",
-            "body lotion - sunscreen": "red",
-            "digestive": "red",
-            "body wash": "red",
-            "men's hair": "red",
-            "vitamins - kids": "red"
-            };
 
                 // Iterate through each keyword
-                for (var keyword in keywords) {
-                    if (keywords.hasOwnProperty(keyword)) {
-                        var regex = new RegExp("\\b" + keyword + "\\b", "gi"); // Create a regex pattern for the keyword
-                        formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: ' + keywords[keyword] + ';">' + keyword + '</span>'); // Replace the keyword with the styled version
+                for (var keyword of keywords) {
+                    if (keyword) {
+                        var regex = new RegExp(`(?<![\\w-])${keyword}(?![\\w-])`, "gi"); // Exclude HTML tag boundaries but allow hyphens
+                        formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: red;">' + keyword + '</span>'); // Replace the keyword with the styled version
                     }
                 }
 
@@ -194,9 +57,24 @@
 
             // Function to convert and display formatted text
             function convertText() {
-                var unformattedText = document.getElementById("unformattedText").value;
-                var formattedText = formatKeywordsInText(unformattedText);
+                var manualText = document.getElementById("manualText").value;
+                var formattedText = formatKeywordsInText(manualText);
                 document.getElementById("formattedText").innerHTML = formattedText;
+            }
+
+            // Function to update word and character counters
+            function updateCounters(textarea) {
+                var words = textarea.value.match(/\S+/g) || [];
+                var charCount = textarea.value.length;
+                var wordCount = words.length;
+
+                if (textarea.id === "unformattedText") {
+                    document.getElementById("wordCount").textContent = wordCount;
+                    document.getElementById("charCount").textContent = charCount;
+                } else if (textarea.id === "manualText") {
+                    document.getElementById("manualWordCount").textContent = wordCount;
+                    document.getElementById("manualCharCount").textContent = charCount;
+                }
             }
         </script>
     </body>
