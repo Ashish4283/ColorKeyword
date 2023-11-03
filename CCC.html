@@ -89,9 +89,8 @@
 
     // Function to update word and character counters
 function updateCounters(textarea) {
-    var words = textarea.value.split(/\s+/); // Split the text by any whitespace character (including spaces)
     var charCount = textarea.value.length;
-    var wordCount = words.length;
+    var wordCount = textarea.value.split(/\s+/).filter(Boolean).length;
 
     if (textarea.id === "unformattedText") {
         document.getElementById("manualWordCount").textContent = wordCount;
@@ -101,7 +100,6 @@ function updateCounters(textarea) {
         document.getElementById("charCount").textContent = charCount;
     }
 }
-
 </script>
     </body>
 </html>
