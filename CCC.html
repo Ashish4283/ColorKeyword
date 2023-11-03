@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyword Formatter</title>
+    <style>
+        .angle-brackets {
+            color: red;
+        </style> <!-- Should be </style> -->
+        <style>
+            .text-box-container {
+                display: flex;
+                justify-content: space-between;
+            }
+            .text-box {
+                width: 48%; /* Adjust the width as needed */
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Keyword Formatter</h1>
+        
+        <!-- Container for text boxes -->
+        <div class="text-box-container">
+            <!-- Text box for input with word and character counters -->
+            <div class="text-box">
+                <textarea id="unformattedText" rows="10" style="font-size: 16px;" placeholder="Insert unformatted text here" oninput="updateCounters(this)"></textarea>
+                <div>Word Count: <span id="wordCount">0</span></div>
+                <div>Character Count: <span id="charCount">0</span></div>
+            </div>
+            
+            <!-- Text box for manual editing with word and character counters -->
+            <div class="text-box">
+                <textarea id="manualText" rows="10" style="font-size: 16px;" placeholder="Manual editing" oninput="updateCounters(this)"></textarea>
+                <div>Word Count: <span id="manualWordCount">0</span></div>
+                <div>Character Count: <span id="manualCharCount">0</span></div>
+            </div>
+        </div>
+        
+        <br>
+        
+        <!-- Convert button -->
+        <button onclick="convertText()" style="font-size: 20px;">Convert</button>
+        
+        <br>
+        
+        <!-- Formatted output -->
+        <div id="formattedText"></div>
+        
+        <script>
+            var keywords = []; // Initialize an empty array for keywords
+
+            // Fetch and load keywords from keywords.txt
+            fetch('https://ashish4283.github.io/ColorKeyword/keywords.txt')
+                .then(response => response.text())
+                .then(data => {
+                keywords = data.split('\n').map(keyword => keyword.trim()); // Load keywords into the array
+                 });
+
+            // Function to format keywords in text
+            function formatKeywordsInText(text) {
+                var formattedText = text;
+
+                // Iterate through each keyword
+                for (var keyword of keywords) {
+                    if (keyword) {
+                        var regex = new RegExp(`(?<![\\w-])${keyword}(?![\\w-])`, "gi"); // Exclude HTML tag boundaries but allow hyphens
+                        formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: red;">' + keyword + '</span>'); // Replace the keyword with the styled version
+                    }
+                }
+
+                return formattedText;
+            }
+
+            // Function to convert and display formatted text
+            function convertText() {
+                var manualText = document.getElementById("manualText").value;
+                var formattedText = formatKeywordsInText(manualText);
+                document.getElementById("formattedText").innerHTML = formattedText;
+            }
+
+            // Function to update word and character counters
+            function updateCounters(textarea) {
+                var words = textarea.value.match(/\S+/g) || [];
+                var charCount = textarea.value.length;
+                var wordCount = words.length;
+
+                if (textarea.id === "unformattedText") {
+                    document.getElementById("wordCount").textContent = wordCount;
+                    document.getElementById("charCount").textContent = charCount;
+                } else if (textarea.id === "manualText") {
+                    document.getElementById("manualWordCount").textContent = wordCount;
+                    document.getElementById("manualCharCount").textContent = charCount;
+                }
+            }
+        </script>
+    </body>
+</html>
