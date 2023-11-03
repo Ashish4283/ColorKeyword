@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text to HTML Bullets Converter</title>
+</head>
+<body>
+  <h1>Text to HTML Converter</h1>
+  <textarea id="inputText" rows="15" cols="150" placeholder="Enter sentences with bullet points here"></textarea>
+<br>  <button onclick="convertToHTML()">Convert</button>
+  <div>
+    <textarea id="outputText" rows="15" cols="150" placeholder="Converted HTML will appear here"></textarea>
+  </div>
+
+  <script>
+function convertToHTML() {
+  var inputText = document.getElementById('inputText').value;
+  var sentences = inputText.split('\n');
+  var htmlOutput = '';
+
+  for (var i = 0; i < sentences.length; i++) {
+    if (sentences[i].trim() !== '') {
+      // Remove the default bullet (•) and replace it with &bull;
+      var sentenceWithoutBullet = sentences[i].replace(/^•/, '');
+      htmlOutput += '&bull; ' + sentenceWithoutBullet.trim() + '<br>';
+    }
+  }
+
+  document.getElementById('outputText').value = htmlOutput;
+}
+  </script>
+</body>
+</html>
