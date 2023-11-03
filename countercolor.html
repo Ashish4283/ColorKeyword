@@ -23,14 +23,14 @@
         <div class="text-box-container">
             <!-- Text box for input with word and character counters -->
             <div class="text-box">
-                <textarea id="unformattedText" rows="10" style="font-size: 16px;" placeholder="Insert unformatted text here" oninput="updateCounters(this)"></textarea>
+                <textarea id="manualText" rows="10" style="font-size: 16px;" placeholder="Insert unformatted text here" oninput="updateCounters(this)"></textarea>
                 <div>Word Count: <span id="wordCount">0</span></div>
                 <div>Character Count: <span id="charCount">0</span></div>
             </div>
             
             <!-- Text box for manual editing with word and character counters -->
             <div class="text-box">
-                <textarea id="manualText" rows="10" style="font-size: 16px;" placeholder="Manual editing" oninput="updateCounters(this)"></textarea>
+                <textarea id="unformattedText" rows="10" style="font-size: 16px;" placeholder="Manual editing" oninput="updateCounters(this)"></textarea>
                 <div>Word Count: <span id="manualWordCount">0</span></div>
                 <div>Character Count: <span id="manualCharCount">0</span></div>
             </div>
