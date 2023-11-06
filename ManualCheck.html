@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyword Formatter</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .textbox {
+            width: 45%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .character-count {
+            font-size: 16px;
+            color: #888;
+        }
+
+        .formatted-text {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Keyword Formatter</h1>
+    
+    <div class="container">
+        <!-- Text box for input -->
+        <textarea id="unformattedText" class="textbox" rows="5" placeholder="Insert unformatted text here" oninput="updateCharacterCount()"></textarea>
+        
+        <!-- Text area for manual input of keywords with separate paragraphs -->
+        <textarea id="manualKeywords" class="textbox" rows="5" placeholder="Manually input keywords (space or line-separated)"></textarea>
+    </div>
+    
+    <div class="container">
+        <!-- Character counter for the Unformatted search box -->
+        <div id="characterCount" class="character-count">Character Count: 0</div>
+        
+        <!-- Convert button -->
+        <button class="button" onclick="convertText()">Convert</button>
+    </div>
+    
+    <!-- Text box for formatted output -->
+    <div id="formattedText" class="formatted-text"></div>
+    
+    <script>
+        // Function to update the character count
+        function updateCharacterCount() {
+            // Get the unformatted text from the input text box
+            var unformattedText = document.getElementById("unformattedText").value;
+            
+            // Get the character count
+            var characterCount = unformattedText.length;
+            
+            // Display the character count in the characterCount div
+            document.getElementById("characterCount").innerHTML = "Character Count: " + characterCount;
+        }
+
+        // Function to format keywords in text
+        function formatKeywordsInText(text, keywords) {
+            // Split the text into words and remove white spaces and special characters
+            var words = text.split(/\s+|\W+/);
+
+            // Create a formatted sentence
+            var formattedSentence = "";
+
+            // Loop through the words and format keywords
+            for (var i = 0; i < words.length; i++) {
+                var word = words[i];
+                var color = keywords[word.toLowerCase()];
+
+                if (color) {
+                    // If the word is a keyword, format it
+                    formattedSentence += '<span style="font-weight: bold; color: ' + color + ';">' + word + '</span>';
+                } else {
+                    // If not a keyword, append the word as is
+                    formattedSentence += word;
+                }
+
+                // Add a space after each word
+                formattedSentence += " ";
+            }
+
+            return formattedSentence;
+        }
+
+        // Function to convert and display formatted text
+        function convertText() {
+            // Get the unformatted text from the input text box
+            var unformattedText = document.getElementById("unformattedText").value;
+
+            // Get the manually inputted keywords and split them by spaces and line breaks
+            var manualKeywordsText = document.getElementById("manualKeywords").value;
+            var manualKeywords = manualKeywordsText.split(/\s+|\n/);
+
+            // Create an object to store the keywords and their colors
+            var keywords = {};
+
+            // Populate the keywords object with manual keywords, removing white spaces and special characters
+            for (var i = 0; i < manualKeywords.length; i++) {
+                var keyword = manualKeywords[i].trim().toLowerCase().replace(/\s+|\W+/g, "");
+                keywords[keyword] = "red";
+            }
+
+            // Format the text using the formatKeywordsInText function with manual keywords
+            var formattedText = formatKeywordsInText(unformattedText, keywords);
+
+            // Set the formatted text as the content of the output text box
+            document.getElementById("formattedText").innerHTML = formattedText;
+        }
+
+        // Initial update of character count
+        updateCharacterCount();
+    </script>
+</body>
+</html>
