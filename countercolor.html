@@ -59,7 +59,7 @@
     var keywords = []; // Initialize an empty array for keywords
 
     // Fetch and load keywords from keywords.txt
-    fetch('https://drive.google.com/uc?id=1NWdZJvkLZ5IHku5MgyXueHSedwFOyVWu')
+   fetch('https://drive.google.com/uc?export=download&id=1NWdZJvkLZ5IHku5MgyXueHSedwFOyVWu')
   .then(response => response.text())
   .then(data => {
     keywords = data.split('\n').map(keyword => keyword.trim()); // Load keywords into the array
