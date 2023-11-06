@@ -59,27 +59,26 @@
     var keywords = []; // Initialize an empty array for keywords
 
     // Fetch and load keywords from keywords.txt
-    fetch('https://ashish4283.github.io/ColorKeyword/keywords.txt')
-        .then(response => response.text())
-        .then(data => {
-        keywords = data.split('\n').map(keyword => keyword.trim()); // Load keywords into the array
-         });
+    fetch('https://drive.google.com/uc?id=1NWdZJvkLZ5IHku5MgyXueHSedwFOyVWu')
+  .then(response => response.text())
+  .then(data => {
+    keywords = data.split('\n').map(keyword => keyword.trim()); // Load keywords into the array
+  });
 
-    // Function to format keywords in text
-    function formatKeywordsInText(text) {
-        var formattedText = text;
+// Function to format keywords in text
+function formatKeywordsInText(text) {
+  var formattedText = text;
 
-        // Iterate through each keyword
-        for (var keyword of keywords) {
-            if (keyword) {
-                var regex = new RegExp(`(?<![\\w-])${keyword}(?![\\w-])`, "gi"); // Exclude HTML tag boundaries but allow hyphens
-                formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: red;">' + keyword + '</span>'); // Replace the keyword with the styled version
-            }
-        }
-
-        return formattedText;
+  // Iterate through each keyword
+  for (var keyword of keywords) {
+    if (keyword) {
+      var regex = new RegExp(`(?<![\\w-])${keyword}(?![\\w-])`, "gi"); // Exclude HTML tag boundaries but allow hyphens
+      formattedText = formattedText.replace(regex, '<span style="font-weight: bold; color: red;">' + keyword + '</span>'); // Replace the keyword with the styled version
     }
+  }
 
+  return formattedText;
+}
     // Function to convert and display formatted text
     function convertText() {
         var manualText = document.getElementById("manualText").value;
