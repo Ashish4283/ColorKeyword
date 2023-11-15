@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 10vh;
+        }
+
+        #container {
+            display: flex;
+            flex: 1;
+            justify-content: space-between; /* Add this to space out the elements */
+        }
+
+        #leftBox, #rightBox {
+            flex: 1;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 0px solid #ccc;
+        }
+        #leftBox textarea, #rightBox textarea {
+            width: 90%;
+            margin-bottom: 10px; /* Add margin-bottom to create space between text areas and button */
+        }
+
+        #convertButton {
+            margin-top: 0px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #counter {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="leftBox">
+            <textarea id="inputBox" rows="10" placeholder="Enter text"></textarea>
+            <div id="leftCounter" class="counter"></div>
+        </div>
+        <div id="rightBox">
+            <textarea id="outputBox" rows="10" placeholder="Converted text"></textarea>
+            <div id="rightCounter" class="counter"></div>
+        </div>
+        <button id="convertButton" onclick="convertText()">Convert</button>
+    </div>
+    <pre>
+    <b>Style Guide:</b>
+    <ul>
+        <li><b>Insert Item Name Without Size and then followed by the coma</b></li>
+        <li><b>Check the short description from Walmart Store, paste it following the coma post the item name</b></li>
+        <li><b>Clean the data if needed</b></li>
+        <li><b>Make sure it satisfies the required character count - 124 max and 61 min word count</b></li>
+        <li><b>If the minimum word count is not met, flag the field for review by the WhyteSpyder Team</b></li>
+        <li><b>Product Short Description must hit the minimum word count identified in the <a href="https://drive.google.com/drive/folders/1gmOwYWG6xrwyN9JzElsVWRT71YmVSA0v">Style Guides.</a></b></li>
+        <li><b><a href="https://drive.google.com/file/d/1H6__eyJ-TwiTlDGdM9sr1q0P6EBhR7Zs/view?usp=sharing">Tips for Short Description (Short description is also referred to as Site Description)</a></b></li>
+        <li><b><a href="https://docs.google.com/document/d/1dvMZ7-vK3PykbRRRWjDSqgFD-uFATRzMAZLkm9Gaxp0/edit#heading=h.guw2e9fk6mc1">Additional Information</a></b></li>
+    </ul>
+	</pre>
+    
+    <script>
+        function convertText() {
+            var inputText = document.getElementById('inputBox').value;
+            var outputText = document.getElementById('outputBox');
+            var leftCounter = document.getElementById('leftCounter');
+            var rightCounter = document.getElementById('rightCounter');
+
+            // Check if <p> tags exist at the beginning and end
+            var startsWithPTag = inputText.startsWith('<p>') && inputText.endsWith('</p>');
+
+            // Add or remove <p> tags accordingly
+            var convertedText = startsWithPTag ? inputText : '<p>' + inputText + '</p>';
+
+            outputText.value = convertedText;
+
+            // Update character counters
+            leftCounter.innerText = 'Characters: ' + inputText.length;
+            rightCounter.innerText = 'Characters: ' + convertedText.length;
+        }
+
+        // Update character counters on input
+        document.getElementById('inputBox').addEventListener('input', function () {
+            var leftCounter = document.getElementById('leftCounter');
+            leftCounter.innerText = 'Characters: ' + this.value.length;
+        });
+
+        document.getElementById('outputBox').addEventListener('input', function () {
+            var rightCounter = document.getElementById('rightCounter');
+            rightCounter.innerText = 'Characters: ' + this.value.length;
+        });
+    </script>
+</body>
+</html>
