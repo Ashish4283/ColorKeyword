@@ -57,20 +57,32 @@
         </div>
         <button id="convertButton" onclick="convertText()">Convert</button>
     </div>
-    <pre>
-    <H1>Style Guide:</H1>
-    <ul>
-        <li><b>Insert Item Name Without Size and then followed by the coma</b></li>
-        <li><b>Check the short description from Walmart Store, paste it following the coma post the item name</b></li>
-        <li><b>Clean the data if needed</b></li>
-        <li><b>Make sure it satisfies the required character count - 124 max and 61 min word count</b></li>
-        <li><b>If the minimum word count is not met, flag the field for review by the WhyteSpyder Team</b></li>
-        <li><b>Product Short Description must hit the minimum word count identified in the <a href="https://drive.google.com/drive/folders/1gmOwYWG6xrwyN9JzElsVWRT71YmVSA0v">Style Guides.</a></b></li>
-        <li><b><a href="https://drive.google.com/file/d/1H6__eyJ-TwiTlDGdM9sr1q0P6EBhR7Zs/view?usp=sharing">Tips for Short Description (Short description is also referred to as Site Description)</a></b></li>
-        <li><b><a href="https://docs.google.com/document/d/1dvMZ7-vK3PykbRRRWjDSqgFD-uFATRzMAZLkm9Gaxp0/edit#heading=h.guw2e9fk6mc1">Additional Information</a></b></li>
-    </ul>
-	</pre>
-    
+   
+To make the instructions more effective and well-structured, you can use proper HTML tags and formatting. Here's an improved version of your instructions:
+
+html
+Copy code
+<div>
+    <h1>Instructions:</h1>
+    <ol>
+        <li><strong>Insert the item name without specifying the size and then follow it with a comma.</strong></li>
+        <li><strong>Check the short description from the Walmart Store and paste it after the comma following the item name.</strong></li>
+        <li><strong>Clean the data if necessary.</strong></li>
+        <li><strong>Ensure that the text satisfies the required character count:</strong></li>
+        <ul>
+            <li><strong>Maximum of 124 characters</strong></li>
+            <li><strong>Minimum of 61 words</strong></li>
+        </ul>
+        <li><strong>If the minimum word count is not met, flag the field for review by the WhyteSpyder Team.</strong></li>
+        <li><strong>If the inserted details in the Enter Text box satisfy the Style Guide requirements, then click on the Convert button on the right.</strong></li>
+        <li><strong>For additional guidance, refer to:</strong></li>
+        <ul>
+            <li><strong><a href="https://drive.google.com/drive/folders/1gmOwYWG6xrwyN9JzElsVWRT71YmVSA0v">Style Guides</a></strong></li>
+            <li><strong><a href="https://drive.google.com/file/d/1H6__eyJ-TwiTlDGdM9sr1q0P6EBhR7Zs/view?usp=sharing">Tips for Short Description (Short description is also referred to as Site Description)</a></strong></li>
+            <li><strong><a href="https://docs.google.com/document/d/1dvMZ7-vK3PykbRRRWjDSqgFD-uFATRzMAZLkm9Gaxp0/edit#heading=h.guw2e9fk6mc1">Additional Information</a></strong></li>
+        </ul>
+    </ol>
+</div>
     <script>
         function convertText() {
             var inputText = document.getElementById('inputBox').value;
