@@ -86,6 +86,9 @@
             var leftCounter = document.getElementById('leftCounter');
             var rightCounter = document.getElementById('rightCounter');
 
+            // Calculate word count
+            var wordCount = inputText.trim().split(/\s+/).length;
+
             // Check if <p> tags exist at the beginning and end
             var startsWithPTag = inputText.startsWith('<p>') && inputText.endsWith('</p>');
 
@@ -94,20 +97,22 @@
 
             outputText.value = convertedText;
 
-            // Update character counters
-            leftCounter.innerText = 'Characters: ' + inputText.length;
-            rightCounter.innerText = 'Characters: ' + convertedText.length;
+            // Update character and word counters
+            leftCounter.innerText = 'Characters: ' + inputText.length + ' | Words: ' + wordCount;
+            rightCounter.innerText = 'Characters: ' + convertedText.length + ' | Words: ' + wordCount;
         }
 
-        // Update character counters on input
+        // Update character and word counters on input
         document.getElementById('inputBox').addEventListener('input', function () {
             var leftCounter = document.getElementById('leftCounter');
-            leftCounter.innerText = 'Characters: ' + this.value.length;
+            var wordCount = this.value.trim().split(/\s+/).length;
+            leftCounter.innerText = 'Characters: ' + this.value.length + ' | Words: ' + wordCount;
         });
 
         document.getElementById('outputBox').addEventListener('input', function () {
             var rightCounter = document.getElementById('rightCounter');
-            rightCounter.innerText = 'Characters: ' + this.value.length;
+            var wordCount = this.value.trim().split(/\s+/).length;
+            rightCounter.innerText = 'Characters: ' + this.value.length + ' | Words: ' + wordCount;
         });
     </script>
 </body>
