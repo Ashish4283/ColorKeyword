@@ -4,7 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
+        function convertLongDescription() {
+            var inputText = document.getElementById('inputBox').value;
+            var outputText = document.getElementById('outputBox');
+            var leftCounter = document.getElementById('leftCounter');
+            var rightCounter = document.getElementById('rightCounter');
+
+            // Split the input text into lines
+            var lines = inputText.split('\n');
+
+            // Fixed title as per requirement
+            var fixedTitle = '<p><strong>Title</strong></p>';
+
+            // Create the Long Description structure with a blank row after title
+            var longDescription = fixedTitle + '<br>\n<ul>\n';
+
+            // Add 5 bullet points starting from the first line of input
+            for (var i = 0; i < 5 && i < lines.length; i++) {
+                longDescription += '<li>' + lines[i] + '</li>\n';
+            }
+
+            longDescription += '</ul>';
+
+            outputText.value = longDescription;
+
+            // Update character counter
+            leftCounter.innerText = 'Characters: ' + inputText.length;
+            rightCounter.innerText = 'Characters: ' + longDescription.length;
+        }       body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -91,34 +118,37 @@
 </div>
 
     <script>
-        function convertLongDescription() {
-            var inputText = document.getElementById('inputBox').value;
-            var outputText = document.getElementById('outputBox');
-            var leftCounter = document.getElementById('leftCounter');
-            var rightCounter = document.getElementById('rightCounter');
+function convertLongDescription() {
+    var inputText = document.getElementById('inputBox').value;
+    var outputText = document.getElementById('outputBox');
+    var leftCounter = document.getElementById('leftCounter');
+    var rightCounter = document.getElementById('rightCounter');
 
-            // Split the input text into lines
-            var lines = inputText.split('\n');
+    // Split the input text into lines
+    var lines = inputText.split('\n');
 
-            // Fixed title as per requirement
-            var fixedTitle = '<p><strong>Title</strong></p>';
+    // Use a default title
+    var productTitle = "Title"; 
 
-            // Create the Long Description structure with a blank row after title
-            var longDescription = fixedTitle + '<br>\n<ul>\n';
+    // Create the Long Description structure with a blank line after the title
+    var longDescription = '<p><strong>' + productTitle + '</strong></p>\n\n<ul>\n';
 
-            // Add 5 bullet points starting from the first line of input
-            for (var i = 0; i < 5 && i < lines.length; i++) {
-                longDescription += '<li>' + lines[i] + '</li>\n';
-            }
+    // Add up to 5 bullet points
+    for (var i = 0; i < 5; i++) {
+        // Ensure we don't exceed the number of lines in input
+        var bulletPoint = (i < lines.length) ? lines[i] : "";
+        longDescription += '<li>' + bulletPoint + '</li>\n';
+    }
 
-            longDescription += '</ul>';
+    longDescription += '</ul>';
 
-            outputText.value = longDescription;
+    outputText.value = longDescription;
 
-            // Update character counter
-            leftCounter.innerText = 'Characters: ' + inputText.length;
-            rightCounter.innerText = 'Characters: ' + longDescription.length;
-        }
+    // Update character counter
+    leftCounter.innerText = 'Characters: ' + inputText.length;
+    rightCounter.innerText = 'Characters: ' + longDescription.length;
+}
+
 
         // Update character counter on input
         document.getElementById('inputBox').addEventListener('input', function () {
