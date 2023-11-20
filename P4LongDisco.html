@@ -118,37 +118,37 @@
 </div>
 
     <script>
-function convertLongDescription() {
-    var inputText = document.getElementById('inputBox').value;
-    var outputText = document.getElementById('outputBox');
-    var leftCounter = document.getElementById('leftCounter');
-    var rightCounter = document.getElementById('rightCounter');
-
-    // Split the input text into lines
-    var lines = inputText.split('\n');
-
-    // Use a default title
-    var productTitle = "Title"; 
-
-    // Create the Long Description structure with a blank line after the title
-    var longDescription = '<p><strong>' + productTitle + '</strong></p>\n\n<ul>\n';
-
-    // Add up to 5 bullet points
-    for (var i = 0; i < 5; i++) {
-        // Ensure we don't exceed the number of lines in input
-        var bulletPoint = (i < lines.length) ? lines[i] : "";
-        longDescription += '<li>' + bulletPoint + '</li>\n';
-    }
-
-    longDescription += '</ul>';
-
-    outputText.value = longDescription;
-
-    // Update character counter
-    leftCounter.innerText = 'Characters: ' + inputText.length;
-    rightCounter.innerText = 'Characters: ' + longDescription.length;
-}
-
+	function convertLongDescription() {
+	    var inputText = document.getElementById('inputBox').value;
+	    var outputText = document.getElementById('outputBox');
+	    var leftCounter = document.getElementById('leftCounter');
+	    var rightCounter = document.getElementById('rightCounter');
+	
+	    // Split the input text into lines
+	    var lines = inputText.split('\n');
+	
+	    // Use a default title
+	    var productTitle = "Title"; 
+	
+	    // Create the Long Description structure with a blank line after the title
+	    var longDescription = '<p><strong>' + productTitle + '</strong></p>\n\n<ul>\n';
+	
+	    // Add up to 5 bullet points
+	    for (var i = 0; i < 5; i++) {
+	        // Ensure we don't exceed the number of lines in input
+	        var bulletPoint = (i < lines.length) ? lines[i] : "";
+	        longDescription += '<li>' + bulletPoint + '</li>\n';
+	    }
+	
+	    longDescription += '</ul>';
+	
+	    outputText.value = longDescription;
+	
+	    // Update character counter
+	    leftCounter.innerText = 'Characters: ' + inputText.length;
+	    rightCounter.innerText = 'Characters: ' + longDescription.length;
+	}
+	
 
         // Update character counter on input
         document.getElementById('inputBox').addEventListener('input', function () {
