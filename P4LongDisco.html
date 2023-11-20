@@ -64,7 +64,7 @@
         <li><strong>The Long Description will start with the First Link which will contain the Product Title/Name, which will be the first line of the Enter Text Box.</strong></li>
         <li><strong>Followed by the first line of the Product Title, there would be 5 Bullet Pointers encapsulated as below Example:
 		<pre>						
-									&lt;p&gt; &lt;strong&gt; The Product Name In Bold&lt;/strong&gt; &lt;/p&gt;
+									&lt;p&gt; &lt;strong&gt;Title&lt;/strong&gt; &lt;/p&gt;
 									&lt;ul&gt;
 									&lt;li&gt;Feature Bullet 1&lt;/li&gt;
 									&lt;li&gt;Feature Bullet 2&lt;/li&gt;
@@ -82,7 +82,7 @@
 	<li><strong><a href="https://drive.google.com/file/d/16AB6UCd5ihPNpo3wC0zolrRuiIGuonOY/view?usp=sharing">The trick for Long Description Video(Old)</a>
 	<li><strong><a href="https://drive.google.com/file/d/1g3sg5r3wXkmNhFSejqmtInTzVtX-6tLi/view?usp=sharing">Notes for Long Description</a>
 	<li><strong><a href="https://docs.google.com/spreadsheets/d/1nm0R_-snilgPF8V7PUbiHCYo3BKrajBpd8_bFahzB5s/edit#gid=0">Long Description Quick Input Formula Template(Old)</a>
-	<li><strong><a href="https://">How to Use above Tool? Video</a>
+	<li><strong><a href="https://www.awesomescreenshot.com/video/22489102?key=e9f93dc4825d3da467b464db6b818f22">How to Use above Tool? Video</a>
 		</strong></li>
         <ul id="bulletList">
             <!-- Bullet points will be added dynamically here -->
@@ -96,19 +96,18 @@
             var outputText = document.getElementById('outputBox');
             var leftCounter = document.getElementById('leftCounter');
             var rightCounter = document.getElementById('rightCounter');
-            var bulletList = document.getElementById('bulletList');
 
             // Split the input text into lines
             var lines = inputText.split('\n');
 
-            // Get the product title (first line)
-            var productTitle = lines[0];
+            // Fixed title as per requirement
+            var fixedTitle = '<p><strong>Title</strong></p>';
 
-            // Create the Long Description structure
-            var longDescription = '<p><strong>' + productTitle + '</strong></p>\n<ul>\n';
+            // Create the Long Description structure with a blank row after title
+            var longDescription = fixedTitle + '<br>\n<ul>\n';
 
-            // Add 5 bullet points
-            for (var i = 1; i <= 5 && i < lines.length; i++) {
+            // Add 5 bullet points starting from the first line of input
+            for (var i = 0; i < 5 && i < lines.length; i++) {
                 longDescription += '<li>' + lines[i] + '</li>\n';
             }
 
