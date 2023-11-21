@@ -4,34 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        function convertLongDescription() {
-            var inputText = document.getElementById('inputBox').value;
-            var outputText = document.getElementById('outputBox');
-            var leftCounter = document.getElementById('leftCounter');
-            var rightCounter = document.getElementById('rightCounter');
-
-            // Split the input text into lines
-            var lines = inputText.split('\n');
-
-            // Fixed title as per requirement
-            var fixedTitle = '<p><strong>Title</strong></p>';
-
-            // Create the Long Description structure with a blank row after title
-            var longDescription = fixedTitle + '<br>\n<ul>\n';
-
-            // Add 5 bullet points starting from the first line of input
-            for (var i = 0; i < 5 && i < lines.length; i++) {
-                longDescription += '<li>' + lines[i] + '</li>\n';
-            }
-
-            longDescription += '</ul>';
-
-            outputText.value = longDescription;
-
-            // Update character counter
-            leftCounter.innerText = 'Characters: ' + inputText.length;
-            rightCounter.innerText = 'Characters: ' + longDescription.length;
-        }       body {
+       body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
