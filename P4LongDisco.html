@@ -71,12 +71,47 @@
             margin-top: 10px;
         }
     </style>
+
+	<script>
+        // Function to check grammar using LanguageTool API
+        function checkGrammar() {
+            var textToCheck = document.getElementById('inputBox').value;
+            var grammarResultBox = document.getElementById('grammarResult');
+
+            fetch('https://api.languagetool.org/v2/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'text': textToCheck,
+                    'language': 'en-US'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Handle the API response here
+                // For example, display the number of errors found
+                grammarResultBox.innerText = 'Errors found: ' + data.matches.length;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                grammarResultBox.innerText = 'Error checking grammar';
+            });
+        }
+    </script>
+
 </head>
 <body>
     <div id="container">
         <div id="leftBox">
             <textarea id="inputBox" rows="10" placeholder="Enter text"></textarea>
             <div id="leftCounter" class="counter"></div>
+            <!-- Button to trigger grammar check -->
+            <button onclick="checkGrammar()">Check Grammar</button>
+            <!-- Area to display grammar check results -->
+            <div id="grammarResult"></div>
         </div>
         <div id="rightBox">
             <textarea id="outputBox" rows="10" placeholder="Converted text"></textarea>
@@ -155,6 +190,7 @@
             var leftCounter = document.getElementById('leftCounter');
             leftCounter.innerText = 'Characters: ' + this.value.length;
         });
+	
     </script>
 </body>
 </html>
