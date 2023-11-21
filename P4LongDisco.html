@@ -46,10 +46,14 @@
     </style>
 
 	<script>
-        // Function to check grammar using LanguageTool API
-        function checkGrammar() {
-            var textToCheck = document.getElementById('inputBox').value;
-            var grammarResultBox = document.getElementById('grammarResult');
+    	// Initialize Quill editor
+    	var quill = new Quill('#editor', {
+        	theme: 'snow'
+    	});
+
+    	function checkGrammar() {
+        	var textToCheck = quill.getText(); // Get text from Quill editor
+        	var grammarResultBox = document.getElementById('grammarResult');
 
             fetch('https://api.languagetool.org/v2/check', {
                 method: 'POST',
@@ -84,12 +88,14 @@
 <body>
     <div id="container">
         <div id="leftBox">
-            <textarea id="inputBox" rows="10" placeholder="Enter text"></textarea>
-            <div id="leftCounter" class="counter"></div>
+		<div id="editor" style="height:300px;"></div>
+    		<div id="leftCounter" class="counter"></div>
+            	<textarea id="inputBox" rows="10" placeholder="Enter text"></textarea>
+            	<div id="leftCounter" class="counter"></div>
             <!-- Button to trigger grammar check -->
-            <button onclick="checkGrammar()">Check Grammar</button>
+            	<button onclick="checkGrammar()">Check Grammar</button>
             <!-- Area to display grammar check results -->
-            <div id="grammarResult"></div>
+            	<div id="grammarResult"></div>
         </div>
         <div id="rightBox">
             <textarea id="outputBox" rows="10" placeholder="Converted text"></textarea>
