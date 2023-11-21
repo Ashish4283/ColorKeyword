@@ -5,6 +5,6 @@ document.getElementById("app").innerHTML = `
 `;
 
 import * as Grammarly from "@grammarly/editor-sdk";
-#Grammarly.init("client_Uz5fQNEreVi6ZnVq7uHgLE");
+/*#Grammarly.init("client_Uz5fQNEreVi6ZnVq7uHgLE");*/
 Grammarly.init("client_7LYtAZtGKRVHfCaESL3J8R");
 
