@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-       body {
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -25,9 +25,9 @@
             box-sizing: border-box;
             border: 0px solid #ccc;
         }
-
-        #leftBox .counter, #rightBox .counter {
-            margin-bottom: 10px;
+        #leftBox textarea, #rightBox textarea {
+            width: 90%;
+            margin-bottom: 10px; /* Add margin-bottom to create space between text areas and button */
         }
 
         #convertButton {
@@ -39,18 +39,17 @@
             border-radius: 5px;
             cursor: pointer;
         }
-    </style>
 
-    <!-- Include Quill stylesheet -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        #counter {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <div id="container">
         <div id="leftBox">
-            <div id="editor" style="height:300px;"></div>
+            <textarea id="inputBox" rows="10" placeholder="Enter text"></textarea>
             <div id="leftCounter" class="counter"></div>
-            <button onclick="checkGrammar()">Check Grammar</button>
-            <div id="grammarResult"></div>
         </div>
         <div id="rightBox">
             <textarea id="outputBox" rows="10" placeholder="Converted text"></textarea>
@@ -58,69 +57,76 @@
         </div>
         <button id="convertButton" onclick="convertLongDescription()">Convert</button>
     </div>
+   
+<div>
+    <h1>Instructions: <a href="https://docs.google.com/document/d/1dvMZ7-vK3PykbRRRWjDSqgFD-uFATRzMAZLkm9Gaxp0/edit#heading=h.x5plgr8op2n5">Phase 4 Review and Revise Product Long Description</a></h1>
+    <ol>
+        <li><strong>The Long Description will start with the First Link which will contain the Product Title/Name, which will be the first line of the Enter Text Box.</strong></li>
+        <li><strong>Followed by the first line of the Product Title, there would be 5 Bullet Pointers encapsulated as below Example:
+		<pre>						
+									&lt;p&gt; &lt;strong&gt;Title&lt;/strong&gt; &lt;/p&gt;
+									&lt;ul&gt;
+									&lt;li&gt;Feature Bullet 1&lt;/li&gt;
+									&lt;li&gt;Feature Bullet 2&lt;/li&gt;
+									&lt;li&gt;Feature Bullet 3&lt;/li&gt;
+									&lt;li&gt;Feature Bullet 4&lt;/li&gt;
+									&lt;li&gt;Feature Bullet 5&lt;/li&gt;
+									&lt;/ul&gt;
+						</pre>
+	<li><strong> All product-long descriptions need to have at least five bullets.
+	<li><strong>If the product has fewer than five bullets
+				First, see if any of the existing bullets can be broken up into separate claims/features
+				If more bullets are still needed, pull info out of the product's short description or label, prioritizing features, claims, and product size
+				Claims are things like “Paraben Free,” “Vegan”, “Organic,” and “Cruelty-Free”
 
-    <!-- Include Quill library -->
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+	<li><strong><a href="https://drive.google.com/file/d/16AB6UCd5ihPNpo3wC0zolrRuiIGuonOY/view?usp=sharing">The trick for Long Description Video(Old)</a>
+	<li><strong><a href="https://drive.google.com/file/d/1g3sg5r3wXkmNhFSejqmtInTzVtX-6tLi/view?usp=sharing">Notes for Long Description</a>
+	<li><strong><a href="https://docs.google.com/spreadsheets/d/1nm0R_-snilgPF8V7PUbiHCYo3BKrajBpd8_bFahzB5s/edit#gid=0">Long Description Quick Input Formula Template(Old)</a>
+	<li><strong><a href="https://www.awesomescreenshot.com/video/22489102?key=e9f93dc4825d3da467b464db6b818f22">How to Use above Tool? Video</a>
+		</strong></li>
+        <ul id="bulletList">
+            <!-- Bullet points will be added dynamically here -->
+        </ul>
+    </ol>
+</div>
+
     <script>
-        // Initialize Quill editor
-        var quill = new Quill('#editor', {
-            theme: 'snow'
-        });
+	function convertLongDescription() {
+	    var inputText = document.getElementById('inputBox').value;
+	    var outputText = document.getElementById('outputBox');
+	    var leftCounter = document.getElementById('leftCounter');
+	    var rightCounter = document.getElementById('rightCounter');
+	
+	    // Split the input text into lines
+	    var lines = inputText.split('\n');
+	
+	    // Use a default title
+	    var productTitle = "Title"; 
+	
+	    // Create the Long Description structure with a blank line after the title
+	    var longDescription = '<p><strong>' + productTitle + '</strong></p>\n\n<ul>\n';
+	
+	    // Add up to 5 bullet points
+	    for (var i = 0; i < 5; i++) {
+	        // Ensure we don't exceed the number of lines in input
+	        var bulletPoint = (i < lines.length) ? lines[i] : "";
+	        longDescription += '<li>' + bulletPoint + '</li>\n';
+	    }
+	
+	    longDescription += '</ul>';
+	
+	    outputText.value = longDescription;
+	
+	    // Update character counter
+	    leftCounter.innerText = 'Characters: ' + inputText.length;
+	    rightCounter.innerText = 'Characters: ' + longDescription.length;
+	}
+	
 
-        // Function to check grammar using LanguageTool API
-        function checkGrammar() {
-            var textToCheck = quill.getText();
-            var grammarResultBox = document.getElementById('grammarResult');
-
-            fetch('https://api.languagetool.org/v2/check', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    'text': textToCheck,
-                    'language': 'en-US'
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                grammarResultBox.innerText = 'Errors found: ' + data.matches.length;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                grammarResultBox.innerText = 'Error checking grammar';
-            });
-        }
-
-        // Function to convert long description
-        function convertLongDescription() {
-            var inputText = quill.getText();
-            var outputText = document.getElementById('outputBox');
+        // Update character counter on input
+        document.getElementById('inputBox').addEventListener('input', function () {
             var leftCounter = document.getElementById('leftCounter');
-            var rightCounter = document.getElementById('rightCounter');
-
-            // Split the input text into lines
-            var lines = inputText.split('\n');
-            var productTitle = "Title"; // Use a default title
-            var longDescription = '<p><strong>' + productTitle + '</strong></p>\n\n<ul>\n';
-
-            for (var i = 0; i < 5; i++) {
-                var bulletPoint = (i < lines.length) ? lines[i] : "";
-                longDescription += '<li>' + bulletPoint + '</li>\n';
-            }
-            longDescription += '</ul>';
-            outputText.value = longDescription;
-
-            leftCounter.innerText = 'Characters: ' + inputText.length;
-            rightCounter.innerText = 'Characters: ' + longDescription.length;
-        }
-
-        // Update character counter for Quill editor
-        quill.on('text-change', function() {
-            var text = quill.getText();
-            var leftCounter = document.getElementById('leftCounter');
-            leftCounter.innerText = 'Characters: ' + text.length;
+            leftCounter.innerText = 'Characters: ' + this.value.length;
         });
     </script>
 </body>
