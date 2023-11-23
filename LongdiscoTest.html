@@ -166,6 +166,9 @@
             
             // Convert newline characters to HTML line breaks
             formattedText = formattedText.replace(/\n/g, '<br>');
+        
+            // Preserve original spacing and line-by-line format
+            formattedText = formattedText.replace(/ /g, '&nbsp;');
             
             htmlOutput.innerHTML = formattedText;
         }
