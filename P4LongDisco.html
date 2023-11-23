@@ -100,7 +100,7 @@
     <div id="container">
         <div id="leftBox">
            <grammarly-editor-plugin clientId="client_7LYtAZtGKRVHfCaESL3J8R" data-v-552086f4>
-               <textarea id="inputBox" rows="10" placeholder="Enter text"></textarea>
+               <textarea id="inputBox" rows="20" placeholder="Enter text"></textarea>
            </grammarly-editor-plugin>
             <div id="leftCounter" class="counter"></div>
         </div>
@@ -166,7 +166,7 @@ function convertLongDescription() {
     var lines = inputText.split('\n');
 
     // Use a default title
-    var productTitle = "Title";
+    var productTitle = "";
 
     // Create the Long Description structure with a blank line after the title
     var longDescription = '<p><strong>' + productTitle + '</strong></p>\n\n<ul>\n';
@@ -196,8 +196,16 @@ function convertToHTML() {
     var inputText = document.getElementById('inputBox').value;
     var htmlOutput = document.getElementById('htmlOutput');
 
-    // Wrap the input text in <pre> tags to preserve whitespace and line breaks
-    var formattedText = '<pre>' + inputText + '</pre>';
+    // Split the input text into lines
+    var lines = inputText.split('\n');
+
+    // Filter out empty lines and create an array of non-empty lines
+    var nonEmptyLines = lines.filter(function(line) {
+        return line.trim() !== '';
+    });
+
+    // Join the non-empty lines with line breaks to create the HTML content
+    var formattedText = '<pre>' + nonEmptyLines.join('\n') + '</pre>';
 
     // Set the innerHTML to insert HTML correctly
     htmlOutput.innerHTML = formattedText;
