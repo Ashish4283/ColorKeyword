@@ -112,46 +112,43 @@
     <script src="./index.mjs" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/@grammarly/editor-sdk?clientId=client_7LYtAZtGKRVHfCaESL3J8R"></script>
     <script>
-        function convertLongDescription() {
-            var inputText = document.getElementById('inputBox').value;
-            var outputText = document.getElementById('outputBox');
+       	function convertLongDescription() {
+	    var inputText = document.getElementById('inputBox').value;
+	    var outputText = document.getElementById('outputBox');
+	    var leftCounter = document.getElementById('leftCounter');
+	    var rightCounter = document.getElementById('rightCounter');
+	
+	    // Split the input text into lines
+	    var lines = inputText.split('\n');
+	
+	    // Use a default title
+	    var productTitle = "Title"; 
+	
+	    // Create the Long Description structure with a blank line after the title
+	    var longDescription = '<p><strong>' + productTitle + '</strong></p>\n\n<ul>\n';
+	
+	    // Add up to 5 bullet points
+	    for (var i = 0; i < 5; i++) {
+	        // Ensure we don't exceed the number of lines in input
+	        var bulletPoint = (i < lines.length) ? lines[i] : "";
+	        longDescription += '<li>' + bulletPoint + '</li>\n';
+	    }
+	
+	    longDescription += '</ul>';
+	
+	    outputText.value = longDescription;
+	
+	    // Update character counter
+	    leftCounter.innerText = 'Characters: ' + inputText.length;
+	    rightCounter.innerText = 'Characters: ' + longDescription.length;
+	}
+	
+
+        // Update character counter on input
+        document.getElementById('inputBox').addEventListener('input', function () {
             var leftCounter = document.getElementById('leftCounter');
-            var rightCounter = document.getElementById('rightCounter');
-
-            // Split the input text into lines
-            var lines = inputText.split('\n');
-
-            // Use a default title
-            var productTitle = "Title";
-
-            // Create the Long Description structure with a blank line after the title
-            var longDescription = '<p><strong>' + productTitle + '</strong></p>\n\n<ul>\n';
-
-            // Add up to 5 bullet points
-            for (var i = 0; i < 5; i++) {
-                // Ensure we don't exceed the number of lines in input
-                var bulletPoint = (i < lines.length) ? lines[i] : "";
-
-                // Convert special character codes to symbols
-                bulletPoint = bulletPoint.replace(/&quot;/g, '"');
-                bulletPoint = bulletPoint.replace(/&amp;/g, '&');
-                bulletPoint = bulletPoint.replace(/&lt;/g, '<');
-                bulletPoint = bulletPoint.replace(/&gt;/g, '>');
-
-                longDescription += '<li>' + bulletPoint + '</li>\n';
-            }
-
-            longDescription += '</ul>';
-
-            // Replace newline characters in the output with <br> for new lines
-            longDescription = longDescription.replace(/\n/g, '<br>');
-
-            outputText.innerHTML = longDescription;
-
-            // Update character counter
-            leftCounter.innerText = 'Characters: ' + inputText.length;
-            rightCounter.innerText = 'Characters: ' + longDescription.length;
-        }
+            leftCounter.innerText = 'Characters: ' + this.value.length;
+        });
 
         // Function to convert input into HTML format with special character codes replaced
 // Function to convert the input into HTML format with special character codes replaced
