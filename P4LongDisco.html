@@ -170,10 +170,10 @@ function convertToHTML() {
     var htmlDescription = '';
 
     // Check if there are lines to process
-    if (lines.length > 0) {
-        htmlDescription += '<p>' + lines[0] + '</p>\n<ul>\n';
+    if (lines.length >= 0) {
+        htmlDescription += '<p></p>\n<ul>\n';
 
-        for (var i = 1; i < lines.length; i++) {
+        for (var i = 0; i < lines.length; i++) {
             // Skip empty lines
             if (lines[i].trim() !== '') {
                 htmlDescription += '  <li>' + lines[i] + '</li>\n';
