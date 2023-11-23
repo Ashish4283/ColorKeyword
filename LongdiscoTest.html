@@ -154,30 +154,40 @@
         }
 
         // Function to convert input into HTML format with special character codes replaced
-        function convertToHTML() {
-            var inputText = document.getElementById('inputBox').value;
-            var htmlOutput = document.getElementById('htmlOutput');
-            
-            // Replace special character codes with symbols
-            var formattedText = inputText.replace(/&quot;/g, '"');
-            formattedText = formattedText.replace(/&amp;/g, '&');
-            formattedText = formattedText.replace(/&lt;/g, '<');
-            formattedText = formattedText.replace(/&gt;/g, '>');
-            
-            // Convert newline characters to HTML line breaks
-            formattedText = formattedText.replace(/\n/g, '<br>');
-        
-            // Preserve original spacing and line-by-line format
-            formattedText = formattedText.replace(/ /g, '&nbsp;');
-            
-            htmlOutput.innerHTML = formattedText;
+// Function to convert the input into HTML format with special character codes replaced
+function convertToHTML() {
+    var inputText = document.getElementById('inputBox').value;
+    var htmlOutput = document.getElementById('htmlOutput');
+
+    // Replace special character codes with symbols
+    var formattedText = inputText.replace(/&quot;/g, '"');
+    formattedText = formattedText.replace(/&amp;/g, '&');
+    formattedText = formattedText.replace(/&lt;/g, '<');
+    formattedText = formattedText.replace(/&gt;/g, '>');
+
+    // Split the input text into lines
+    var lines = formattedText.split('\n');
+
+    // Start with an empty HTML structure
+    var htmlDescription = '';
+
+    // Check if there are lines to process
+    if (lines.length > 0) {
+        htmlDescription += '<p>' + lines[0] + '</p>\n<ul>\n';
+
+        for (var i = 1; i < lines.length; i++) {
+            // Skip empty lines
+            if (lines[i].trim() !== '') {
+                htmlDescription += '  <li>' + lines[i] + '</li>\n';
+            }
         }
 
-        // Update character counter on input
-        document.getElementById('inputBox').addEventListener('input', function () {
-            var leftCounter = document.getElementById('leftCounter');
-            leftCounter.innerText = 'Characters: ' + this.value.length;
-        });
+        htmlDescription += '</ul>';
+    }
+
+    htmlOutput.innerHTML = htmlDescription;
+}
+
     </script>
 </body>
 </html>
