@@ -134,6 +134,29 @@
 		    // Update character counter
 		    leftCounter.innerText = 'Characters: ' + inputText.length;
 		    rightCounter.innerText = 'Characters: ' + longDescription.length;
-	 </script>
-</body>
+		} 
+    function convertToHTML() {
+    var inputText = document.getElementById('inputBox').value;
+    var htmlOutput = document.getElementById('htmlOutput');
+    
+    // Replace special character codes with symbols
+    var formattedText = inputText.replace(/&quot;/g, '"');
+    formattedText = formattedText.replace(/&amp;/g, '&');
+    formattedText = formattedText.replace(/&lt;/g, '<');
+    formattedText = formattedText.replace(/&gt;/g, '>');
+    
+    // Convert newline characters to HTML line breaks
+    formattedText = formattedText.replace(/\n/g, '<br>');
+    
+    htmlOutput.innerHTML = formattedText;
+}
+
+// HTML for the new box/div    </script>
+
+<div id="htmlBox">
+    <h2>Converted HTML</h2>
+    <div id="htmlOutput"></div>
+    <button onclick="convertToHTML()">Convert to HTML</button>
+</div>
+	</body>
 </html>
