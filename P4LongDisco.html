@@ -10,29 +10,45 @@
             padding: 0;
             display: flex; 
             flex-direction: column;
-            height: 10vh;
+            align-items: center; /* Center content vertically */
+            background-color: #f0f0f0; /* Set background color */
+            min-height: 100vh; /* Ensure full viewport height */
+        }
+
+        h1 {
+            background-color: #4CAF50; /* Header background color */
+            color: white; /* Header text color */
+            padding: 10px; /* Header padding */
+            text-align: center;
         }
 
         #container {
             display: flex;
             flex: 1;
-            justify-content: space-between; /* Add this to space out the elements */
+            justify-content: space-between; /* Space out the elements */
+            width: 90%; /* Set the container width */
+            background-color: #fff; /* Container background color */
+            border-radius: 5px; /* Add border radius */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+            margin-top: 20px; /* Add top margin */
         }
 
         #leftBox, #rightBox {
             flex: 1;
-            padding: 10px;
+            padding: 20px; /* Increase padding */
             box-sizing: border-box;
-            border: 0px solid #ccc;
         }
+        
         #leftBox textarea, #rightBox textarea {
-            width: 90%;
-            margin-bottom: 10px; /* Add margin-bottom to create space between text areas and button */
+            width: 100%; /* Full width text areas */
+            padding: 10px; /* Padding for text areas */
+            border: 1px solid #ccc; /* Add a border */
+            border-radius: 5px; /* Add border radius */
         }
 
         #convertButton {
-            margin-top: 0px;
-            padding: 10px;
+            margin-top: 10px; /* Add top margin */
+            padding: 10px 20px; /* Increase padding */
             background-color: #4CAF50;
             color: white;
             border: none;
@@ -46,17 +62,41 @@
 
         #htmlBox {
             flex: 1;
-            padding: 10px;
+            padding: 20px; /* Increase padding */
             box-sizing: border-box;
-            border: 0px solid #ccc;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
         }
 
         #htmlBox h2 {
             margin-top: 0;
+            color: #4CAF50; /* Heading color */
         }
+
+        #htmlOutput {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Style for the converted text */
+        #rightBox #outputBox {
+            border: 1px solid #4CAF50; /* Border color for converted text */
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f0f0f0; /* Background color for converted text */
+            color: #333; /* Text color for converted text */
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
     </style>
 </head>
 <body>
+<h1> WS Long Description Tool </h1>
     <div id="container">
         <div id="leftBox">
            <grammarly-editor-plugin clientId="client_7LYtAZtGKRVHfCaESL3J8R" data-v-552086f4>
@@ -64,19 +104,21 @@
            </grammarly-editor-plugin>
             <div id="leftCounter" class="counter"></div>
         </div>
-        <div id="rightBox">
-            <textarea id="outputBox" rows="10" placeholder="Converted text"></textarea>
-            <div id="rightCounter" class="counter"></div>
-        </div>
+<div id="rightBox">
+    <textarea id="outputBox" rows="10" placeholder="Converted text"></textarea>
+    <div id="rightCounter" class="counter"></div>
+    <button id="copyTextButton" onclick="copyText()">Copy Text</button> <!-- Add the copy text button -->
+</div>
         <button id="convertButton" onclick="convertLongDescription()">Convert</button>
     </div>
-   
-    <div id="htmlBox">
+
+    <div id="htmlBox" style="width: 80%;">
         <h2>Fix Special Characters</h2>
         <div id="htmlOutput"></div>
-        <button onclick="convertToHTML()"> To Fix Format Click Here </button>
+        <button onclick="convertToHTML()">Click to Fix Special Characters</button>
+        <button onclick="copyToClipboard()">Copy HTML</button> <!-- Add the copy button -->
     </div>
-   
+
     <div>
         <h1>Instructions: <a href="https://docs.google.com/document/d/1dvMZ7-vK3PykbRRRWjDSqgFD-uFATRzMAZLkm9Gaxp0/edit#heading=h.x5plgr8op2n5">Phase 4 Review and Revise Product Long Description</a></h1>
         <ol>
@@ -111,80 +153,72 @@
     <div id="app"></div>
     <script src="./index.mjs" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/@grammarly/editor-sdk?clientId=client_7LYtAZtGKRVHfCaESL3J8R"></script>
+##########################################################################################
+
     <script>
-       	function convertLongDescription() {
-	    var inputText = document.getElementById('inputBox').value;
-	    var outputText = document.getElementById('outputBox');
-	    var leftCounter = document.getElementById('leftCounter');
-	    var rightCounter = document.getElementById('rightCounter');
-	
-	    // Split the input text into lines
-	    var lines = inputText.split('\n');
-	
-	    // Use a default title
-	    var productTitle = ""; 
-	
-	    // Create the Long Description structure with a blank line after the title
-	    var longDescription = '<p><strong>' + productTitle + '</strong></p>\n\n<ul>\n';
-	
-	    // Add up to 5 bullet points
-	    for (var i = 0; i < 5; i++) {
-	        // Ensure we don't exceed the number of lines in input
-	        var bulletPoint = (i < lines.length) ? lines[i] : "";
-	        longDescription += '<li>' + bulletPoint + '</li>\n';
-	    }
-	
-	    longDescription += '</ul>';
-	
-	    outputText.value = longDescription;
-	
-	    // Update character counter
-	    leftCounter.innerText = 'Characters: ' + inputText.length;
-	    rightCounter.innerText = 'Characters: ' + longDescription.length;
-	}
-	
+function convertLongDescription() {
+    var inputText = document.getElementById('inputBox').value;
+    var outputText = document.getElementById('outputBox');
+    var leftCounter = document.getElementById('leftCounter');
+    var rightCounter = document.getElementById('rightCounter');
 
-        // Update character counter on input
-        document.getElementById('inputBox').addEventListener('input', function () {
-            var leftCounter = document.getElementById('leftCounter');
-            leftCounter.innerText = 'Characters: ' + this.value.length;
-        });
+    // Split the input text into lines
+    var lines = inputText.split('\n');
 
-        // Function to convert input into HTML format with special character codes replaced
-// Function to convert the input into HTML format with special character codes replaced
-// Function to convert the input into HTML format with special character codes replaced
+    // Use a default title
+    var productTitle = "Title";
+
+    // Create the Long Description structure with a blank line after the title
+    var longDescription = '<p><strong>' + productTitle + '</strong></p>\n\n<ul>\n';
+
+    // Iterate through all the lines and add them as list items
+    for (var i = 0; i < lines.length; i++) {
+        // Skip empty lines
+        if (lines[i].trim() !== '') {
+            // Ensure we don't exceed the number of lines in input
+            var bulletPoint = lines[i];
+
+            // Add bullet points with proper formatting
+            longDescription += '<li>' + bulletPoint + '</li>\n';
+        }
+    }
+
+    longDescription += '</ul>';
+
+    outputText.innerHTML = longDescription;
+
+    // Update character counter
+    leftCounter.innerText = 'Characters: ' + inputText.length;
+    rightCounter.innerText = 'Characters: ' + longDescription.length;
+}
+// Function to convert the input into HTML format
 function convertToHTML() {
     var inputText = document.getElementById('inputBox').value;
     var htmlOutput = document.getElementById('htmlOutput');
 
-    // Replace special character codes with symbols
-    var formattedText = inputText.replace(/&quot;/g, '"');
-    formattedText = formattedText.replace(/&amp;/g, '&');
-    formattedText = formattedText.replace(/&lt;/g, '<');
-    formattedText = formattedText.replace(/&gt;/g, '>');
-
-    // Split the input text into lines
-    var lines = formattedText.split('\n');
-
-    // Start with an empty HTML structure
-    var htmlDescription = '';
-
-    // Check if there are lines to process
-    if (lines.length >= 0) {
-        htmlDescription += '<p></p>\n<ul>\n';
-
-        for (var i = 0; i < lines.length; i++) {
-            // Skip empty lines
-            if (lines[i].trim() !== '') {
-                htmlDescription += '  <li>' + lines[i] + '</li>\n';
-            }
-        }
-
-        htmlDescription += '</ul>';
-    }
+    // Wrap the input text in <pre> tags to preserve whitespace and line breaks
+    var formattedText = '<pre>' + inputText + '</pre>';
 
     // Set the innerHTML to insert HTML correctly
-    htmlOutput.innerHTML = htmlDescription;
+    htmlOutput.innerHTML = formattedText;
+}
+
+function copyToClipboard() {
+    var htmlOutput = document.getElementById('htmlOutput');
+    var range = document.createRange();
+    range.selectNode(htmlOutput);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    alert('HTML code copied to clipboard');
+}
+
+function copyText() {
+    var outputText = document.getElementById('outputBox');
+    outputText.select();
+    document.execCommand('copy');
+    alert('Text copied to clipboard');
 }
 
 
