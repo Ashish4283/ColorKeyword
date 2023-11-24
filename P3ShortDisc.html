@@ -2,37 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
+            display: flex; 
             flex-direction: column;
-            height: 10vh;
+            align-items: center;
+            background-color: #007bff; /* Change background color to a cool blue (#007bff) */
+            min-height: 100vh;
+        }
+
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
         }
 
         #container {
             display: flex;
             flex: 1;
-            justify-content: space-between; /* Add this to space out the elements */
+            justify-content: space-between;
+            width: 90%;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
         }
 
         #leftBox, #rightBox {
             flex: 1;
-            padding: 10px;
+            padding: 20px;
             box-sizing: border-box;
-            border: 0px solid #ccc;
         }
+        
         #leftBox textarea, #rightBox textarea {
-            width: 90%;
-            margin-bottom: 10px; /* Add margin-bottom to create space between text areas and button */
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         #convertButton {
-            margin-top: 0px;
-            padding: 10px;
+            margin-top: 10px;
+            padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
             border: none;
@@ -43,21 +59,63 @@
         #counter {
             margin-top: 10px;
         }
+
+        #htmlBox {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        #htmlBox h2 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+
+        #htmlOutput {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Style for the converted text */
+        #rightBox #outputBox {
+            border: 1px solid #4CAF50;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
+<h1> WS Short Description Tool </h1>
     <div id="container">
         <div id="leftBox">
-            <textarea id="inputBox" rows="10" placeholder="Enter text"></textarea>
+            <textarea id="inputBox" rows="20" placeholder="Enter text"></textarea>
             <div id="leftCounter" class="counter"></div>
         </div>
         <div id="rightBox">
             <textarea id="outputBox" rows="10" placeholder="Converted text"></textarea>
             <div id="rightCounter" class="counter"></div>
+            <button id="copyTextButton" onclick="copyText()">Copy Text</button>
         </div>
-        <button id="convertButton" onclick="convertText()">Convert</button>
+        <button id="convertButton" onclick="convertShortDescription()">Convert</button>
     </div>
-   
+
+    <div id="htmlBox" style="width: 80%;">
+        <h2>Fix Special Characters</h2>
+        <div id="htmlOutput"></div>
+        <button onclick="convertToHTML()">Click to Fix Special Characters</button>
+        <button onclick="copyToClipboard()">Copy HTML</button>
+    </div>
+
 <div>
     <h1>Instructions:</h1>
     <ol>
@@ -80,41 +138,95 @@
         </ul>
     </ol>
 </div>
+
+
     <script>
-        function convertText() {
-            var inputText = document.getElementById('inputBox').value;
-            var outputText = document.getElementById('outputBox');
-            var leftCounter = document.getElementById('leftCounter');
-            var rightCounter = document.getElementById('rightCounter');
+   function convertShortDescription() {
+    var inputText = document.getElementById('inputBox').value;
+    var outputText = document.getElementById('outputBox');
+    var leftCounter = document.getElementById('leftCounter');
+    var rightCounter = document.getElementById('rightCounter');
 
-            // Calculate word count
-            var wordCount = inputText.trim().split(/\s+/).length;
+    // Remove additional blank lines at the end
+    inputText = inputText.replace(/\n+$/, '');
 
-            // Check if <p> tags exist at the beginning and end
-            var startsWithPTag = inputText.startsWith('<p>') && inputText.endsWith('</p>');
+    // Enclose the input text within <p></p> tags
+    var shortDescription = '<p>' + inputText + '</p>';
 
-            // Add or remove <p> tags accordingly
-            var convertedText = startsWithPTag ? inputText : '<p>' + inputText + '</p>';
+    outputText.innerHTML = shortDescription;
 
-            outputText.value = convertedText;
+    // Update character counter
+    leftCounter.innerText = 'Characters: ' + inputText.length;
+    rightCounter.innerText = 'Characters: ' + shortDescription.length;
+	}
 
-            // Update character and word counters
-            leftCounter.innerText = 'Characters: ' + inputText.length + ' | Words: ' + wordCount;
-            rightCounter.innerText = 'Characters: ' + convertedText.length + ' | Words: ' + wordCount;
+function convertToHTML() {
+    var inputText = document.getElementById('inputBox').value;
+    var htmlOutput = document.getElementById('htmlOutput');
+
+    // Remove extra line breaks at the end
+    inputText = inputText.trim().replace(/\n+$/, '');
+
+    // Split the input text into lines
+    var lines = inputText.split('\n');
+
+    // Apply sentence casing to each line and join them with <br> tags
+    var formattedText = lines.map(function(line) {
+        return sentenceCase(line);
+    }).join('<br>');
+
+    // Set the innerHTML to insert HTML correctly
+    htmlOutput.innerHTML = formattedText;
+}
+
+
+        // Function to convert HTML content to sentence case
+        function sentenceCaseHTML(input) {
+            // Split the input into paragraphs
+            var paragraphs = input.split('</p>');
+            var sentenceCaseParagraphs = [];
+
+            // Iterate through paragraphs and apply sentence case to each
+            for (var i = 0; i < paragraphs.length; i++) {
+                var paragraph = paragraphs[i];
+                if (paragraph.trim() !== '') {
+                    // Extract the text within the paragraph tags
+                    var text = paragraph.replace(/<\/?[^>]+(>|$)/g, "");
+                    
+                    // Convert the text to sentence case
+                    var sentenceCaseText = sentenceCase(text);
+
+                    // Reassemble the paragraph with sentence case text
+                    sentenceCaseParagraphs.push('<p>' + sentenceCaseText + '</p>');
+                }
+            }
+
+            // Join the paragraphs back together with their tags
+            return sentenceCaseParagraphs.join('');
         }
 
-        // Update character and word counters on input
-        document.getElementById('inputBox').addEventListener('input', function () {
-            var leftCounter = document.getElementById('leftCounter');
-            var wordCount = this.value.trim().split(/\s+/).length;
-            leftCounter.innerText = 'Characters: ' + this.value.length + ' | Words: ' + wordCount;
-        });
+        // Function to convert a string to sentence case
+        function sentenceCase(input) {
+            return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
+        }
 
-        document.getElementById('outputBox').addEventListener('input', function () {
-            var rightCounter = document.getElementById('rightCounter');
-            var wordCount = this.value.trim().split(/\s+/).length;
-            rightCounter.innerText = 'Characters: ' + this.value.length + ' | Words: ' + wordCount;
-        });
+        function copyToClipboard() {
+            var htmlOutput = document.getElementById('htmlOutput');
+            var range = document.createRange();
+            range.selectNode(htmlOutput);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            alert('HTML code copied to clipboard');
+        }
+
+        function copyText() {
+            var outputText = document.getElementById('outputBox');
+            outputText.select();
+            document.execCommand('copy');
+            alert('Text copied to clipboard');
+        }
     </script>
 </body>
 </html>
