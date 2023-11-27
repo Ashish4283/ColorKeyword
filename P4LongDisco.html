@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -196,6 +197,22 @@ function convertToHTML() {
     var inputText = document.getElementById('inputBox').value;
     var htmlOutput = document.getElementById('htmlOutput');
 
+    // Function to sentence case the first letter of the entire text, after a full stop, and each new line
+    function sentenceCase(str) {
+        // Capitalize the first letter of the text
+        str = str.charAt(0).toUpperCase() + str.slice(1);
+
+        // Capitalize the first letter after each full stop, exclamation mark, or question mark
+        str = str.replace(/([.!?]\s*)([a-z])/g, function (m, $1, $2) {
+            return $1 + $2.toUpperCase();
+        });
+
+        // Capitalize the first letter of each new line
+        return str.replace(/(\n\s*)([a-z])/g, function (m, $1, $2) {
+            return $1 + $2.toUpperCase();
+        });
+    }
+
     // Split the input text into lines
     var lines = inputText.split('\n');
 
@@ -204,11 +221,11 @@ function convertToHTML() {
         return line.trim() !== '';
     });
 
-    // Join the non-empty lines with line breaks to create the HTML content
-    var formattedText = '<pre>' + nonEmptyLines.join('\n') + '</pre>';
+    // Apply sentence case to the entire input text
+    var formattedText = sentenceCase(nonEmptyLines.join('\n'));
 
     // Set the innerHTML to insert HTML correctly
-    htmlOutput.innerHTML = formattedText;
+    htmlOutput.innerHTML = '<pre>' + formattedText + '</pre>';
 }
 
 function copyToClipboard() {
