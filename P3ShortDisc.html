@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,7 @@
             display: flex; 
             flex-direction: column;
             align-items: center;
-            background-color: #007bff; /* Change background color to a cool blue (#007bff) */
+            background-color: #f0f0f0;
             min-height: 100vh;
         }
 
@@ -56,8 +57,9 @@
             cursor: pointer;
         }
 
-        #counter {
+        #wordCounter {
             margin-top: 10px;
+            text-align: center;
         }
 
         #htmlBox {
@@ -98,12 +100,14 @@
 <h1> WS Short Description Tool </h1>
     <div id="container">
         <div id="leftBox">
-            <textarea id="inputBox" rows="20" placeholder="Enter text"></textarea>
-            <div id="leftCounter" class="counter"></div>
+            <textarea id="inputBox" rows="20" placeholder="Enter text" oninput="countWords('inputBox', 'leftWordCounter')"></textarea>
+            <div id="leftWordCounter" class="counter">Words: 0</div>
+            <button id="clearButton" onclick="clearText()">Clear</button>
+            <button id="pasteButton" onclick="pasteText()">Paste</button>
         </div>
         <div id="rightBox">
             <textarea id="outputBox" rows="10" placeholder="Converted text"></textarea>
-            <div id="rightCounter" class="counter"></div>
+            <div id="rightCounter" class="counter">Words: 0</div>
             <button id="copyTextButton" onclick="copyText()">Copy Text</button>
         </div>
         <button id="convertButton" onclick="convertShortDescription()">Convert</button>
@@ -119,83 +123,65 @@
 <div>
     <h1>Instructions:</h1>
     <ol>
-        <!-- Your instructions here -->
+        <li><strong>Insert the item name without specifying the size and then follow it with a comma.</strong></li>
+        <li><strong>Check the short description from the Walmart Store and paste it after the comma following the item name.</strong></li>
+        <li><strong>Clean the data if necessary.</strong></li>
+        <li><strong>Ensure that the text satisfies the required character count:</strong></li>
+        <ul>
+            <li><strong>Maximum of 124 words</strong></li>
+            <li><strong>Minimum of 61 words</strong></li>
+        </ul>
+        <li><strong>If the minimum word count is not met, flag the field for review by the WhyteSpyder Team.</strong></li>
+        <li><strong>If the inserted details in the Enter Text box satisfy the Style Guide requirements, then click on the Convert button on the right.</strong></li>
+        <li><strong>For additional guidance, refer to:</strong></li>
+        <ul>
+            <li><strong><a href="https://drive.google.com/drive/folders/1gmOwYWG6xrwyN9JzElsVWRT71YmVSA0v">Style Guides</a></strong></li>
+            <li><strong><a href="https://drive.google.com/file/d/1H6__eyJ-TwiTlDGdM9sr1q0P6EBhR7Zs/view?usp=sharing">Tips for Short Description (Short description is also referred to as Site Description)</a></strong></li>
+            <li><strong><a href="https://docs.google.com/document/d/1dvMZ7-vK3PykbRRRWjDSqgFD-uFATRzMAZLkm9Gaxp0/edit#heading=h.guw2e9fk6mc1">Additional Information</a></strong></li>
+            <li><strong><a href="https://www.awesomescreenshot.com/video/22485288?key=d706b790dab61acfc0398e1ee71437ff">Please find the quick video on the above tool</a></strong></li>                    
+        </ul>
     </ol>
 </div>
 
-
     <script>
-   function convertShortDescription() {
-    var inputText = document.getElementById('inputBox').value;
-    var outputText = document.getElementById('outputBox');
-    var leftCounter = document.getElementById('leftCounter');
-    var rightCounter = document.getElementById('rightCounter');
+        function convertShortDescription() {
+            var inputText = document.getElementById('inputBox').value;
+            var outputText = document.getElementById('outputBox');
 
-    // Remove additional blank lines at the end
-    inputText = inputText.replace(/\n+$/, '');
+            // Remove additional blank lines at the end
+            inputText = inputText.replace(/\n+$/, '');
 
-    // Enclose the input text within <p></p> tags
-    var shortDescription = '<p>' + inputText + '</p>';
+            // Enclose the input text within <p></p> tags
+            var shortDescription = '<p>' + inputText + '</p>';
 
-    outputText.innerHTML = shortDescription;
-
-    // Update character counter
-    leftCounter.innerText = 'Characters: ' + inputText.length;
-    rightCounter.innerText = 'Characters: ' + shortDescription.length;
-	}
-
-function convertToHTML() {
-    var inputText = document.getElementById('inputBox').value;
-    var htmlOutput = document.getElementById('htmlOutput');
-
-    // Remove extra line breaks at the end
-    inputText = inputText.trim().replace(/\n+$/, '');
-
-    // Split the input text into lines
-    var lines = inputText.split('\n');
-
-    // Apply sentence casing to each line and join them with <br> tags
-    var formattedText = lines.map(function(line) {
-        return sentenceCase(line);
-    }).join('<br>');
-
-    // Set the innerHTML to insert HTML correctly
-    htmlOutput.innerHTML = formattedText;
-}
-
-// Function to apply sentence case after each full stop (period)
-function sentenceCase(input) {
-    var sentences = input.split('. ');
-    var sentenceCaseSentences = sentences.map(function(sentence) {
-        return sentence.trim() ? sentence.charAt(0).toUpperCase() + sentence.slice(1).toLowerCase() : '';
-    });
-    return sentenceCaseSentences.join('. ');
-}
-        // Function to convert HTML content to sentence case
-        function sentenceCaseHTML(input) {
-            // Split the input into paragraphs
-            var paragraphs = input.split('</p>');
-            var sentenceCaseParagraphs = [];
-
-            // Iterate through paragraphs and apply sentence case to each
-            for (var i = 0; i < paragraphs.length; i++) {
-                var paragraph = paragraphs[i];
-                if (paragraph.trim() !== '') {
-                    // Extract the text within the paragraph tags
-                    var text = paragraph.replace(/<\/?[^>]+(>|$)/g, "");
-                    
-                    // Convert the text to sentence case
-                    var sentenceCaseText = sentenceCase(text);
-
-                    // Reassemble the paragraph with sentence case text
-                    sentenceCaseParagraphs.push('<p>' + sentenceCaseText + '</p>');
-                }
-            }
-
-            // Join the paragraphs back together with their tags
-            return sentenceCaseParagraphs.join('');
+            outputText.innerHTML = shortDescription;
         }
 
+        // Function to apply custom sentence casing
+        function customSentenceCase(str) {
+            // Capitalize the first letter of the text
+            str = str.charAt(0).toUpperCase() + str.slice(1);
+
+            // Capitalize the first letter after each full stop, exclamation mark, question mark, or a new line
+            str = str.replace(/([.!?]\s*|\n\s*)([a-z])/g, function (m, $1, $2) {
+                return $1 + $2.toUpperCase();
+            });
+
+            return str;
+        }
+
+        function convertToHTML() {
+            var inputText = document.getElementById('inputBox').value;
+            var htmlOutput = document.getElementById('htmlOutput');
+
+            // Apply custom sentence casing to the entire input text
+            var formattedText = customSentenceCase(inputText);
+
+            // Set the innerHTML to insert HTML correctly
+            htmlOutput.innerHTML = '<pre>' + formattedText + '</pre>';
+        }
+
+        // Function to copy HTML code to clipboard
         function copyToClipboard() {
             var htmlOutput = document.getElementById('htmlOutput');
             var range = document.createRange();
@@ -207,11 +193,44 @@ function sentenceCase(input) {
             alert('HTML code copied to clipboard');
         }
 
+        // Function to copy text to clipboard
         function copyText() {
             var outputText = document.getElementById('outputBox');
             outputText.select();
             document.execCommand('copy');
             alert('Text copied to clipboard');
+        }
+
+        // Function to clear the left text box
+        function clearText() {
+            var inputBox = document.getElementById('inputBox');
+            inputBox.value = '';
+        }
+
+        // Function to paste clipboard data into the left text box
+        function pasteText() {
+            var inputBox = document.getElementById('inputBox');
+            navigator.clipboard.readText().then(function(clipboardText) {
+                inputBox.value = clipboardText;
+            });
+        }
+
+        // Function to count words and update the word counter
+        function countWords(textboxId, counterId) {
+            var textbox = document.getElementById(textboxId);
+            var counter = document.getElementById(counterId);
+
+            // Remove extra line breaks at the end
+            var inputText = textbox.value.trim().replace(/\n+$/, '');
+
+            // Split the input text into words
+            var words = inputText.split(/\s+/);
+
+            // Count the words
+            var wordCount = words.length;
+
+            // Update the word counter
+            counter.innerText = 'Words: ' + wordCount;
         }
     </script>
 </body>
