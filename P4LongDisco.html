@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,19 +99,19 @@
 <body>
 <h1> WS Long Description Tool </h1>
     <div id="container">
-<div id="leftBox">
-    <grammarly-editor-plugin clientId="client_7LYtAZtGKRVHfCaESL3J8R" data-v-552086f4>
-        <textarea id="inputBox" rows="20" placeholder="Enter text"></textarea>
-    </grammarly-editor-plugin>
-    <div id="leftCounter" class="counter"></div>
-    <button id="clearButton">Clear</button>
-    <button id="pasteButton">Paste</button>
-</div>
-<div id="rightBox">
-    <textarea id="outputBox" rows="10" placeholder="Converted text"></textarea>
-    <div id="rightCounter" class="counter"></div>
-    <button id="copyTextButton" onclick="copyText()">Copy Text</button> <!-- Add the copy text button -->
-</div>
+        <div id="leftBox">
+            <grammarly-editor-plugin clientId="client_7LYtAZtGKRVHfCaESL3J8R" data-v-552086f4>
+                <textarea id="inputBox" rows="20" placeholder="Enter text"></textarea>
+            </grammarly-editor-plugin>
+            <div id="leftWordCounter">Words: 0</div>
+            <button id="clearButton">Clear</button>
+            <button id="pasteButton">Paste</button>
+        </div>
+        <div id="rightBox">
+            <textarea id="outputBox" rows="10" placeholder="Converted text"></textarea>
+            <div id="rightWordCounter">Words: 0</div>
+            <button id="copyTextButton" onclick="copyText()">Copy Text</button>
+        </div>
         <button id="convertButton" onclick="convertLongDescription()">Convert</button>
     </div>
 
@@ -157,12 +158,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@grammarly/editor-sdk?clientId=client_7LYtAZtGKRVHfCaESL3J8R"></script>
 ##########################################################################################
 
-    <script>
+   
+<script>
+// Function to convert the long description
 function convertLongDescription() {
     var inputText = document.getElementById('inputBox').value;
     var outputText = document.getElementById('outputBox');
-    var leftCounter = document.getElementById('leftCounter');
-    var rightCounter = document.getElementById('rightCounter');
 
     // Split the input text into lines
     var lines = inputText.split('\n');
@@ -175,94 +176,101 @@ function convertLongDescription() {
 
     // Iterate through all the lines and add them as list items
     for (var i = 0; i < lines.length; i++) {
-        // Skip empty lines
         if (lines[i].trim() !== '') {
-            // Ensure we don't exceed the number of lines in input
             var bulletPoint = lines[i];
-
-            // Add bullet points with proper formatting
             longDescription += '<li>' + bulletPoint + '</li>\n';
         }
     }
 
     longDescription += '</ul>';
-
     outputText.innerHTML = longDescription;
-
-    // Update character counter
-    leftCounter.innerText = 'Characters: ' + inputText.length;
-    rightCounter.innerText = 'Characters: ' + longDescription.length;
+    updateRightWordCount(); // Update word count for the right box
 }
+
 // Function to convert the input into HTML format
 function convertToHTML() {
     var inputText = document.getElementById('inputBox').value;
     var htmlOutput = document.getElementById('htmlOutput');
 
-    // Function to sentence case the first letter of the entire text, after a full stop, and each new line
     function sentenceCase(str) {
-        // Capitalize the first letter of the text
         str = str.charAt(0).toUpperCase() + str.slice(1);
-
-        // Capitalize the first letter after each full stop, exclamation mark, or question mark
         str = str.replace(/([.!?]\s*)([a-z])/g, function (m, $1, $2) {
             return $1 + $2.toUpperCase();
         });
-
-        // Capitalize the first letter of each new line
         return str.replace(/(\n\s*)([a-z])/g, function (m, $1, $2) {
             return $1 + $2.toUpperCase();
         });
     }
 
-    // Split the input text into lines
     var lines = inputText.split('\n');
-
-    // Filter out empty lines and create an array of non-empty lines
     var nonEmptyLines = lines.filter(function(line) {
         return line.trim() !== '';
     });
-
-    // Apply sentence case to the entire input text
     var formattedText = sentenceCase(nonEmptyLines.join('\n'));
-
-    // Set the innerHTML to insert HTML correctly
     htmlOutput.innerHTML = '<pre>' + formattedText + '</pre>';
 }
 
-function copyToClipboard() {
-    var htmlOutput = document.getElementById('htmlOutput');
-    var range = document.createRange();
-    range.selectNode(htmlOutput);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
-    window.getSelection().removeAllRanges();
-    alert('HTML code copied to clipboard');
-}
-
+// Rest of your convertToHTML, copyToClipboard, and copyText functions
 function copyText() {
-    var outputText = document.getElementById('outputBox');
-    outputText.select();
-    document.execCommand('copy');
-    alert('Text copied to clipboard');
+    var outputText = document.getElementById('outputBox').value;
+    navigator.clipboard.writeText(outputText)
+        .then(() => {
+            alert('Text copied to clipboard');
+        })
+        .catch(err => {
+            console.error('Error in copying text: ', err);
+        });
 }
 
 
-// Function to clear the input text
+function countWords(text) {
+    return text.split(/\s+/).filter(function(word) {
+        return word.length > 0;
+    }).length;
+}
+
+function updateLeftWordCount() {
+    var text = document.getElementById('inputBox').value;
+    var wordCount = countWords(text);
+    document.getElementById('leftWordCounter').innerText = 'Words: ' + wordCount;
+}
+
+function updateRightWordCount() {
+    var text = document.getElementById('outputBox').value;
+    var wordCount = countWords(text);
+    document.getElementById('rightWordCounter').innerText = 'Words: ' + wordCount;
+}
+
 function clearText() {
     document.getElementById('inputBox').value = '';
+    updateLeftWordCount(); // Update word count after clearing
 }
 
-// Function to paste clipboard data
+function copyToClipboard() {
+    var htmlOutput = document.getElementById('htmlOutput').innerText;
+    navigator.clipboard.writeText(htmlOutput)
+        .then(() => {
+            alert('HTML code copied to clipboard');
+        })
+        .catch(err => {
+            console.error('Error in copying text: ', err);
+        });
+}
+
 function pasteClipboardData() {
-    navigator.clipboard.readText().then(clipText => 
-        document.getElementById('inputBox').value = clipText);
+    navigator.clipboard.readText().then(clipText => {
+        document.getElementById('inputBox').value = clipText;
+        updateLeftWordCount(); // Update word count after pasting
+    });
 }
 
-// Add event listeners for the buttons
 document.getElementById('clearButton').addEventListener('click', clearText);
 document.getElementById('pasteButton').addEventListener('click', pasteClipboardData);
+document.getElementById('inputBox').addEventListener('input', updateLeftWordCount);
+document.getElementById('outputBox').addEventListener('input', updateRightWordCount);
 
-    </script>
+</script>
+
+
 </body>
 </html> 
