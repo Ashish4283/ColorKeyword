@@ -119,23 +119,7 @@
 <div>
     <h1>Instructions:</h1>
     <ol>
-        <li><strong>Insert the item name without specifying the size and then follow it with a comma.</strong></li>
-        <li><strong>Check the short description from the Walmart Store and paste it after the comma following the item name.</strong></li>
-        <li><strong>Clean the data if necessary.</strong></li>
-        <li><strong>Ensure that the text satisfies the required character count:</strong></li>
-        <ul>
-            <li><strong>Maximum of 124 words</strong></li>
-            <li><strong>Minimum of 61 words</strong></li>
-        </ul>
-        <li><strong>If the minimum word count is not met, flag the field for review by the WhyteSpyder Team.</strong></li>
-        <li><strong>If the inserted details in the Enter Text box satisfy the Style Guide requirements, then click on the Convert button on the right.</strong></li>
-        <li><strong>For additional guidance, refer to:</strong></li>
-        <ul>
-            <li><strong><a href="https://drive.google.com/drive/folders/1gmOwYWG6xrwyN9JzElsVWRT71YmVSA0v">Style Guides</a></strong></li>
-            <li><strong><a href="https://drive.google.com/file/d/1H6__eyJ-TwiTlDGdM9sr1q0P6EBhR7Zs/view?usp=sharing">Tips for Short Description (Short description is also referred to as Site Description)</a></strong></li>
-            <li><strong><a href="https://docs.google.com/document/d/1dvMZ7-vK3PykbRRRWjDSqgFD-uFATRzMAZLkm9Gaxp0/edit#heading=h.guw2e9fk6mc1">Additional Information</a></strong></li>
-            <li><strong><a href="https://www.awesomescreenshot.com/video/22485288?key=d706b790dab61acfc0398e1ee71437ff">Please find the quick video on the above tool</a></strong></li>                    
-        </ul>
+        <!-- Your instructions here -->
     </ol>
 </div>
 
@@ -179,7 +163,14 @@ function convertToHTML() {
     htmlOutput.innerHTML = formattedText;
 }
 
-
+// Function to apply sentence case after each full stop (period)
+function sentenceCase(input) {
+    var sentences = input.split('. ');
+    var sentenceCaseSentences = sentences.map(function(sentence) {
+        return sentence.trim() ? sentence.charAt(0).toUpperCase() + sentence.slice(1).toLowerCase() : '';
+    });
+    return sentenceCaseSentences.join('. ');
+}
         // Function to convert HTML content to sentence case
         function sentenceCaseHTML(input) {
             // Split the input into paragraphs
@@ -203,11 +194,6 @@ function convertToHTML() {
 
             // Join the paragraphs back together with their tags
             return sentenceCaseParagraphs.join('');
-        }
-
-        // Function to convert a string to sentence case
-        function sentenceCase(input) {
-            return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
         }
 
         function copyToClipboard() {
